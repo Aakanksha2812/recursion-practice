@@ -176,17 +176,17 @@ public class GridOperation {
     }
 
     ArrayList<Integer> neighboursCount(int[][] mat, int n, int m, ArrayList<Integer> list) {
-      int v=0;
+        int v = 0;
         int row = mat.length;
         int col = mat[0].length;
         if (n > 0) {
-             v=mat[n - 1][m];
-            if (v%2 == 0) {
+            v = mat[n - 1][m];
+            if (v % 2 == 0) {
                 list.add(v);
             }
         }
         if (m > 0) {
-            v=mat[n][m - 1];
+            v = mat[n][m - 1];
             if (v % 2 == 0) {
                 list.add(v);
             }
@@ -202,6 +202,48 @@ public class GridOperation {
             }
         }
         return list;
+    }
+
+    int countConnected(int[][] mat, int i, int j, int n, int m, boolean[][] visited) {
+        if (i >= n || j >= m || i < 0 || j < 0) {
+            return 0;
+        }
+        if (mat[i][j] == 0 || visited[i][j]) {
+            return 0;
+        }
+
+        visited[i][j] = true;
+
+        int count = 1;
+        count += countConnected(mat, i + 1, j, n, m, visited);
+        count += countConnected(mat, i, j + 1, n, m, visited);
+        count += countConnected(mat, i - 1, j, n, m, visited);
+        count += countConnected(mat, i, j - 1, n, m, visited);
+        //top left
+        count+=countConnected(mat,i-1,j-1,n,m,visited);
+        //top right
+        count+=countConnected(mat,i-1,j+1,n,m,visited);
+        //down left
+        count+=countConnected(mat,i+1,j-1,n,m,visited);
+        //down right
+        count+=countConnected(mat,i+1,j+1,n,m,visited);
+
+        return count;
+    }
+
+    int dfs(int[][] mat, boolean[][] visited) {
+        int n = mat.length;
+        int m = mat[0].length;
+        int islandCount = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (mat[i][j] == 1 && !visited[i][j]) {
+                    countConnected(mat, i, j, n, m, visited);
+                    islandCount++;
+                }
+            }
+        }
+        return islandCount;
     }
 
     public static void main(String[] args) {
@@ -242,5 +284,17 @@ public class GridOperation {
         System.out.println(list1);
         ArrayList<Integer> list2 = new ArrayList<>();
         System.out.println(g.neighboursCount(mat, 1, 1, list2));
+        int[][] mat2 = new int[][]{
+                {1, 1, 0},
+                {1, 0, 0},
+                {0, 1, 1},
+                {0, 1, 1}
+        };
+        boolean[][] visited2 = new boolean[4][3];
+        System.out.println(g.countConnected(mat2, 0, 0, 4, 3, visited2));
+        System.out.println("island count");
+        boolean[][] visited3 = new boolean[4][3];
+        System.out.println(g.dfs(mat2, visited3));
+
     }
 }
