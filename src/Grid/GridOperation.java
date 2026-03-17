@@ -219,6 +219,7 @@ public class GridOperation {
         count += countConnected(mat, i, j + 1, n, m, visited);
         count += countConnected(mat, i - 1, j, n, m, visited);
         count += countConnected(mat, i, j - 1, n, m, visited);
+        /*
         //top left
         count+=countConnected(mat,i-1,j-1,n,m,visited);
         //top right
@@ -226,7 +227,7 @@ public class GridOperation {
         //down left
         count+=countConnected(mat,i+1,j-1,n,m,visited);
         //down right
-        count+=countConnected(mat,i+1,j+1,n,m,visited);
+        count+=countConnected(mat,i+1,j+1,n,m,visited);*/
 
         return count;
     }
@@ -234,6 +235,7 @@ public class GridOperation {
     int dfs(int[][] mat, boolean[][] visited) {
         int n = mat.length;
         int m = mat[0].length;
+
         int islandCount = 0;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
@@ -245,7 +247,38 @@ public class GridOperation {
         }
         return islandCount;
     }
+    int largestIland(int[][] mat,boolean[][] visited){
+        int n = mat.length;
+        int m = mat[0].length;
+        int max=0;
+        int islandCount = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (mat[i][j] == 1 && !visited[i][j]) {
+                  int iCount=  countConnected(mat, i, j, n, m, visited);
+                  if(iCount>=max){
+                      max=iCount;
+                  }
+                }
+            }
+        }
+        return max;
+    }
+    ArrayList<Integer> sizeOfIslands(int[][] mat,boolean[][] visited){
+        int n = mat.length;
+        ArrayList<Integer> list=new ArrayList<>();
+        int m = mat[0].length;
 
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (mat[i][j] == 1 && !visited[i][j]) {
+                    int iCount=  countConnected(mat, i, j, n, m, visited);
+                   list.add(iCount);
+                }
+            }
+        }
+        return list;
+    }
     public static void main(String[] args) {
         GridOperation g = new GridOperation();
         int[][] mat = new int[][]{
@@ -290,11 +323,20 @@ public class GridOperation {
                 {0, 1, 1},
                 {0, 1, 1}
         };
+        int[][] mat3=new int[][]{
+                { 1 ,1, 0, 1},
+                { 1 ,0, 0, 0},
+                {  0 ,0 ,1 ,1},
+                {0 ,0 ,1, 1}
+        };
         boolean[][] visited2 = new boolean[4][3];
         System.out.println(g.countConnected(mat2, 0, 0, 4, 3, visited2));
         System.out.println("island count");
         boolean[][] visited3 = new boolean[4][3];
         System.out.println(g.dfs(mat2, visited3));
-
+        boolean[][] visited4=new boolean[4][4];
+        System.out.println(g.largestIland(mat3,visited4));
+        boolean[][] visited5=new boolean[4][4];
+        System.out.println(g.sizeOfIslands(mat3,visited5));
     }
 }
