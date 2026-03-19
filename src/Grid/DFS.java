@@ -37,6 +37,44 @@ public class DFS {
         surroundedRegion(grid, i, j - 1, n, m);
     }
 
+    void enclave(int[][] mat, int i, int j, int n, int m) {
+        if (i >= n  || j >= m  || i <0 || j < 0) {
+            return;
+        }
+        if (mat[i][j] != 1) {
+            return;
+        }
+        if (mat[i][j] == 1) {
+            mat[i][j] = 2;
+        }
+        enclave(mat, i + 1, j, n, m);
+        enclave(mat, i, j + 1, n, m);
+        enclave(mat, i - 1, j, n, m);
+        enclave(mat, i, j - 1, n, m);
+    }
+
+    int dfsForEnclave(int[][] mat, int n, int m) {
+        int numberOfEncllave = 0;
+        for (int i = 0; i < n ; i++) {
+            for (int j = 0; j < m ; j++) {
+                if (i == 0|| j == 0 || i == n - 1 || j == m - 1) {
+                    if (mat[i][j] == 1) {
+                        enclave(mat, i, j, n, m);
+                    }
+                }
+            }
+        }
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+
+                if (mat[i][j] == 1) {
+                    numberOfEncllave++;
+                }
+            }
+        }
+        return numberOfEncllave;
+    }
+
     void dfsMehod(char[][] grid, int n, int m) {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
@@ -78,5 +116,20 @@ public class DFS {
             }
             System.out.println();
         }
+        int[][] mat = new int[][]{
+                {0,1,0},
+                {1,1,0},
+                {0,0,0}
+        };
+        int n1 = mat.length;
+        int m1 = mat[0].length;
+        System.out.println(d.dfsForEnclave(mat, n1, m1));
+        for (int i = 0; i < n1; i++) {
+            for (int j = 0; j < m1; j++) {
+                System.out.print(mat[i][j] + " ");
+            }
+            System.out.println();
+        }
+
     }
 }
