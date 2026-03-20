@@ -1,5 +1,7 @@
 package Grid;
 
+import java.util.ArrayList;
+
 public class DFS {
     void surroundedRegionApproach1(char[][] grid, int i, int j, int n, int m, boolean[][] visted) {
         if (i >= n || j >= m || i < 0 || j < 0) {
@@ -38,7 +40,7 @@ public class DFS {
     }
 
     void enclave(int[][] mat, int i, int j, int n, int m) {
-        if (i >= n  || j >= m  || i <0 || j < 0) {
+        if (i >= n || j >= m || i < 0 || j < 0) {
             return;
         }
         if (mat[i][j] != 1) {
@@ -55,9 +57,9 @@ public class DFS {
 
     int dfsForEnclave(int[][] mat, int n, int m) {
         int numberOfEncllave = 0;
-        for (int i = 0; i < n ; i++) {
-            for (int j = 0; j < m ; j++) {
-                if (i == 0|| j == 0 || i == n - 1 || j == m - 1) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (i == 0 || j == 0 || i == n - 1 || j == m - 1) {
                     if (mat[i][j] == 1) {
                         enclave(mat, i, j, n, m);
                     }
@@ -97,6 +99,26 @@ public class DFS {
         }
     }
 
+    void createWord(int i, int j, int n, int m, char[][] mat, StringBuilder sb, ArrayList<String> list) {
+
+        if (i < 0 || j < 0 || i >= n || j >= m) {
+            return;
+        }
+        sb.append(mat[i][j]);
+        if (i == n - 1 && j == m - 1) {
+            list.add(sb.toString());
+            sb.deleteCharAt(sb.length() - 1);
+            return;
+        }
+
+        createWord(i + 1, j, n, m, mat, sb, list);
+        createWord(i, j + 1, n, m, mat, sb, list);
+
+
+        sb.deleteCharAt(sb.length() - 1);
+    }
+
+
     public static void main(String args[]) {
         DFS d = new DFS();
         char[][] grid = new char[][]{
@@ -117,9 +139,9 @@ public class DFS {
             System.out.println();
         }
         int[][] mat = new int[][]{
-                {0,1,0},
-                {1,1,0},
-                {0,0,0}
+                {0, 1, 0},
+                {1, 1, 0},
+                {0, 0, 0}
         };
         int n1 = mat.length;
         int m1 = mat[0].length;
@@ -130,6 +152,15 @@ public class DFS {
             }
             System.out.println();
         }
-
+        char[][] mat1 = new char[][]{
+                {'A', 'B', 'C'},
+                {'D', 'E', 'F'},
+                {'G', 'H', 'I'}
+        };
+        int n2 = mat1.length;
+        int m2 = mat1[0].length;
+        ArrayList<String> list = new ArrayList<>();
+        d.createWord(0, 0, n2, m2, mat1, new StringBuilder(""), list);
+        System.out.println(list);
     }
 }
