@@ -100,7 +100,6 @@ public class DFS {
     }
 
     void createWord(int i, int j, int n, int m, char[][] mat, StringBuilder sb, ArrayList<String> list) {
-
         if (i < 0 || j < 0 || i >= n || j >= m) {
             return;
         }
@@ -110,15 +109,51 @@ public class DFS {
             sb.deleteCharAt(sb.length() - 1);
             return;
         }
-
         createWord(i + 1, j, n, m, mat, sb, list);
         createWord(i, j + 1, n, m, mat, sb, list);
-
-
         sb.deleteCharAt(sb.length() - 1);
     }
 
+    void createWordWithfourDireaction(int i, int j, int n, int m, char[][] mat, StringBuilder sb, boolean[][] visited, ArrayList<String> list) {
+        if (i < 0 || j < 0 || i >= n || j >= m) {
+            return;
+        }
 
+        if (visited[i][j]) {
+            return;
+        }
+        visited[i][j] = true;
+        sb.append(mat[i][j]);
+        if (i == n - 1 && j == m - 1) {
+            list.add(sb.toString());
+            sb.deleteCharAt(sb.length() - 1);
+            visited[i][j] = false;
+            return;
+        }
+        createWordWithfourDireaction(i + 1, j, n, m, mat, sb, visited, list);
+        createWordWithfourDireaction(i, j + 1, n, m, mat, sb, visited, list);
+        createWordWithfourDireaction(i - 1, j, n, m, mat, sb, visited, list);
+        createWordWithfourDireaction(i, j - 1, n, m, mat, sb, visited, list);
+        visited[i][j] = false;
+        sb.deleteCharAt(sb.length() - 1);
+    }
+boolean searchWord(int i,int j,int n,int m,char[][] mat,String word,int k,boolean[][] visited){
+    if (i<0 ||j<0|| i >= n || j >= m) {
+        return false;
+    }
+    if(visited[i][j] ||mat[i][j]!=word.charAt(k)){
+        return false;
+    }
+   if(k==word.length()-1){
+
+       return true;
+   }
+   visited[i][j]=true;
+    boolean found=searchWord(i+1,j,n,m,mat,word,k+1,visited) ||searchWord(i,j+1,n,m,mat,word,k+1,visited)||
+            searchWord(i-1,j,n,m,mat,word,k+1,visited)||searchWord(i,j-1,n,m,mat,word,k+1,visited);
+    visited[i][j]=false;
+    return found;
+}
     public static void main(String args[]) {
         DFS d = new DFS();
         char[][] grid = new char[][]{
@@ -162,5 +197,11 @@ public class DFS {
         ArrayList<String> list = new ArrayList<>();
         d.createWord(0, 0, n2, m2, mat1, new StringBuilder(""), list);
         System.out.println(list);
+        boolean[][] visited1 = new boolean[n2][m2];
+        ArrayList<String> list2 = new ArrayList<>();
+        d.createWordWithfourDireaction(0, 0, n2, m2, mat1, new StringBuilder(""), visited1, list2);
+        System.out.println(list2);
+        boolean[][] visited2=new boolean[n2][m2];
+        System.out.println(d.searchWord(0,0,n2,m2,mat1,"ABCEFI",0,visited2));
     }
 }

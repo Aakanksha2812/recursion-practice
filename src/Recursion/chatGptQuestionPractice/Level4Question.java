@@ -103,36 +103,61 @@ public class Level4Question {
 
         }
     }
-    void permutation2(int[] num,boolean[] freq,ArrayList<Integer> list,ArrayList<ArrayList<Integer>> store){
-        if(num.length==list.size()){
+
+    void permutation2(int[] num, boolean[] freq, ArrayList<Integer> list, ArrayList<ArrayList<Integer>> store) {
+        if (num.length == list.size()) {
             store.add(new ArrayList<>(list));
             return;
         }
-        for(int i=0;i<num.length;i++){
-            if(freq[i]){
+        for (int i = 0; i < num.length; i++) {
+            if (freq[i]) {
                 continue;
             }
-            if(i>0 && num[i]==num[i-1] && !freq[i-1]){
+            if (i > 0 && num[i] == num[i - 1] && !freq[i - 1]) {
                 continue;
             }
-            freq[i]=true;
+            freq[i] = true;
             list.add(num[i]);
-            permutation2(num,freq,list,store);
-            list.remove(list.size()-1);
-            freq[i]=false;
+            permutation2(num, freq, list, store);
+            list.remove(list.size() - 1);
+            freq[i] = false;
         }
     }
-    void pallidromePartition(int i,String s,ArrayList<String> list,ArrayList<ArrayList<String>> store){
-        if(i==s.length()){
+
+    void pallidromePartition(int i, String s, ArrayList<String> list, ArrayList<ArrayList<String>> store) {
+        if (i == s.length()) {
             store.add(new ArrayList<>(list));
             return;
         }
-        for (int j=i;j<s.length();j++){
-            if(pallidrome(s,i,j)){
-                String part=s.substring(i,j+1);
+        for (int j = i; j < s.length(); j++) {
+            if (pallidrome(s, i, j)) {
+                String part = s.substring(i, j + 1);
                 list.add(part);
-                pallidromePartition(j+1,s,list,store);
-                list.remove(list.size()-1);
+                pallidromePartition(j + 1, s, list, store);
+                list.remove(list.size() - 1);
+            }
+        }
+    }
+
+    void permutationForFirstTwoelement(int[] nums, boolean[] visited, ArrayList<Integer> list, ArrayList<ArrayList<Integer>> store) {
+
+        if (nums.length == list.size()) {
+            store.add(new ArrayList<>(list));
+            return;
+        }
+
+        for (int i = 0; i < nums.length; i++) {
+            if (!visited[i]) {
+                visited[i] = true;
+                list.add(nums[i]);
+                if (list.size()>1  && ((list.get(list.size()-1) + list.get(list.size()-2)) % 2 != 0)) {
+                    list.remove(list.size() - 1);
+                    visited[i] = false;
+                  continue;
+                }
+                permutationForFirstTwoelement(nums, visited, list, store);
+                list.remove(list.size() - 1);
+                visited[i] = false;
             }
         }
     }
@@ -164,12 +189,18 @@ public class Level4Question {
         System.out.println(Store);
         ArrayList<Integer> list3 = new ArrayList<>();
         ArrayList<ArrayList<Integer>> Store1 = new ArrayList<>();
-        int[] num3=new int[]{1,1,2};
-        l.permutation2(num3,freq2,list3,Store1);
+        int[] num3 = new int[]{1, 1, 2};
+        l.permutation2(num3, freq2, list3, Store1);
         System.out.println(Store1);
         ArrayList<ArrayList<String>> Store2 = new ArrayList<>();
         ArrayList<String> list4 = new ArrayList<>();
-        l.pallidromePartition(0,"aab",list4,Store2);
+        l.pallidromePartition(0, "aab", list4, Store2);
         System.out.println(Store2);
+        int[] num4 = new int[]{1, 5, 3};
+        ArrayList<Integer> list5 = new ArrayList<>();
+        ArrayList<ArrayList<Integer>> Store3 = new ArrayList<>();
+        boolean[] visited = new boolean[num4.length];
+        l.permutationForFirstTwoelement(num4, visited, list5, Store3);
+        System.out.println(Store3);
     }
 }
