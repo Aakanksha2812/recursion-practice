@@ -165,6 +165,27 @@ public class Recursion {
         }
     }
 
+    void derangement(int[] nums, boolean[] visited, ArrayList<Integer> list, ArrayList<ArrayList<Integer>> store) {
+        if (nums.length == list.size()) {
+            store.add(new ArrayList<>(list));
+            return;
+        }
+        for (int i = 0; i < nums.length; i++) {
+            if (visited[i]) {
+                continue;
+            }
+            int index = list.size();
+            if (nums[i] == nums[index]) {
+                continue;
+            }
+            visited[i] = true;
+            list.add(nums[i]);
+            derangement(nums, visited, list, store);
+            list.remove(list.size() - 1);
+            visited[i] = false;
+        }
+    }
+
     void permutationWithKlength(int[] nums, int[] k, boolean[] visited, ArrayList<Integer> list, ArrayList<ArrayList<Integer>> store) {
         if (!store.isEmpty()) {
             return;
@@ -184,6 +205,53 @@ public class Recursion {
                 list.remove(list.size() - 1);
                 visited[i] = false;
             }
+        }
+    }
+
+    void permutationWithKLengthList(int[] nums, int k, int target, boolean[] visited, ArrayList<Integer> list, ArrayList<ArrayList<Integer>> store) {
+        if (list.size() == k) {
+            if (target == 0) {
+                store.add(new ArrayList<>(list));
+            }
+            return;
+        }
+        if (target < 0) {
+            return;
+        }
+        for (int i = 0; i < nums.length; i++) {
+            if (visited[i]) {
+                continue;
+            }
+
+            visited[i] = true;
+          list.add(nums[i]);
+            permutationWithKLengthList(nums, k, target-nums[i], visited, list, store);
+        list.remove(list.size()-1);
+
+            visited[i] = false;
+
+        }
+    }
+    void adjencntWithNoAbsoluteDiff(int[] nums,boolean[] visited,ArrayList<Integer> list,ArrayList<ArrayList<Integer>> store){
+        if(nums.length==list.size()){
+            store.add(new ArrayList<>(list));
+            return;
+        }
+        for (int i=0;i<nums.length;i++){
+            if (visited[i]){
+                continue;
+            }
+            if(!list.isEmpty()){
+                int last=list.get(list.size()-1);
+                if(Math.abs(nums[i]-last)==1){
+                    continue;
+                }
+            }
+            visited[i]=true;
+            list.add(nums[i]);
+            adjencntWithNoAbsoluteDiff(nums,visited,list,store);
+            list.remove(list.size()-1);
+            visited[i]=false;
         }
     }
 
@@ -207,7 +275,7 @@ public class Recursion {
         ArrayList<String> list1 = new ArrayList<>();
         r.letterCase(0, "a1b2", new StringBuilder(""), list1);
         System.out.println(list1);
-        int[] nums = new int[]{1, 2, 3, 4};
+        int[] nums = new int[]{1, 2, 3,4};
         ArrayList<Integer> list2 = new ArrayList<>();
         boolean[] visited1 = new boolean[nums.length];
         r.permutation2(nums, visited1, list2, store);
@@ -226,6 +294,17 @@ public class Recursion {
         ArrayList<ArrayList<Integer>> store2 = new ArrayList<>();
         r.parityElement(nums, visited3, list5, store2);
         System.out.println(store2);
-
+        ArrayList<Integer> list6 = new ArrayList<>();
+        boolean[] visited4 = new boolean[nums.length];
+        ArrayList<ArrayList<Integer>> store3 = new ArrayList<>();
+        r.derangement(nums, visited4, list6, store3);
+        System.out.println(store3);
+        boolean[] visited5 = new boolean[nums.length];
+        ArrayList<ArrayList<Integer>> store4 = new ArrayList<>();
+        r.permutationWithKLengthList(nums, 2, 5, visited5, new ArrayList<>(), store4);
+        System.out.println(store4);
+        ArrayList<ArrayList<Integer>> store5 = new ArrayList<>();
+        r.adjencntWithNoAbsoluteDiff(nums,new boolean[nums.length],new ArrayList<>(),store5);
+        System.out.println(store5);
     }
 }
