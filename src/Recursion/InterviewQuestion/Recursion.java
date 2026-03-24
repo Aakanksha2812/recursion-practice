@@ -128,6 +128,43 @@ public class Recursion {
         }
     }
 
+    void letterCaseOnly(int i, String s, StringBuilder sb, ArrayList<String> list) {
+        if (i == s.length()) {
+            list.add(sb.toString());
+            return;
+        }
+        sb.append(Character.toLowerCase(s.charAt(i)));
+        letterCaseOnly(i + 1, s, sb, list);
+        sb.deleteCharAt(sb.length() - 1);
+        sb.append(Character.toUpperCase(s.charAt(i)));
+        letterCaseOnly(i + 1, s, sb, list);
+        sb.deleteCharAt(sb.length() - 1);
+
+    }
+
+    void parityElement(int[] nums, boolean[] visited, ArrayList<Integer> list, ArrayList<ArrayList<Integer>> store) {
+        if (nums.length == list.size()) {
+            store.add(new ArrayList<>(list));
+            return;
+        }
+        for (int i = 0; i < nums.length; i++) {
+            if (visited[i]) {
+                continue;
+            }
+            if (!list.isEmpty()) {
+                int last = list.get(list.size() - 1);
+                if ((last % 2 == 0 && nums[i] % 2 == 0) || (last % 2 != 0 && nums[i] % 2 != 0)) {
+                    continue;
+                }
+            }
+            visited[i] = true;
+            list.add(nums[i]);
+            parityElement(nums, visited, list, store);
+            list.remove(list.size() - 1);
+            visited[i] = false;
+        }
+    }
+
     void permutationWithKlength(int[] nums, int[] k, boolean[] visited, ArrayList<Integer> list, ArrayList<ArrayList<Integer>> store) {
         if (!store.isEmpty()) {
             return;
@@ -170,7 +207,7 @@ public class Recursion {
         ArrayList<String> list1 = new ArrayList<>();
         r.letterCase(0, "a1b2", new StringBuilder(""), list1);
         System.out.println(list1);
-        int[] nums = new int[]{1, 2, 3};
+        int[] nums = new int[]{1, 2, 3, 4};
         ArrayList<Integer> list2 = new ArrayList<>();
         boolean[] visited1 = new boolean[nums.length];
         r.permutation2(nums, visited1, list2, store);
@@ -181,6 +218,14 @@ public class Recursion {
         int[] k = {3};
         r.permutationWithKlength(nums, k, visited2, list3, store1);
         System.out.println(store1);
+        ArrayList<String> list4 = new ArrayList<>();
+        r.letterCaseOnly(0, "ab", new StringBuilder(""), list4);
+        System.out.println(list4);
+        ArrayList<Integer> list5 = new ArrayList<>();
+        boolean[] visited3 = new boolean[nums.length];
+        ArrayList<ArrayList<Integer>> store2 = new ArrayList<>();
+        r.parityElement(nums, visited3, list5, store2);
+        System.out.println(store2);
 
     }
 }
