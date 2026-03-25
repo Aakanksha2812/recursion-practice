@@ -2,6 +2,9 @@ package Recursion.InterviewQuestion;
 
 import java.util.ArrayList;
 
+import static Recursion.chatGptQuestionPractice.Level2Questions.pallidrome;
+import static Recursion.chatGptQuestionPractice.Level2Questions.swap;
+
 public class Recursion {
     boolean validSumSequence(int i, int[] nums, int target) {
         if (nums.length == i) {
@@ -224,35 +227,85 @@ public class Recursion {
             }
 
             visited[i] = true;
-          list.add(nums[i]);
-            permutationWithKLengthList(nums, k, target-nums[i], visited, list, store);
-        list.remove(list.size()-1);
+            list.add(nums[i]);
+            permutationWithKLengthList(nums, k, target - nums[i], visited, list, store);
+            list.remove(list.size() - 1);
 
             visited[i] = false;
 
         }
     }
-    void adjencntWithNoAbsoluteDiff(int[] nums,boolean[] visited,ArrayList<Integer> list,ArrayList<ArrayList<Integer>> store){
-        if(nums.length==list.size()){
+
+    void adjencntWithNoAbsoluteDiff(int[] nums, boolean[] visited, ArrayList<Integer> list, ArrayList<ArrayList<Integer>> store) {
+        if (nums.length == list.size()) {
             store.add(new ArrayList<>(list));
             return;
         }
-        for (int i=0;i<nums.length;i++){
-            if (visited[i]){
+        for (int i = 0; i < nums.length; i++) {
+            if (visited[i]) {
                 continue;
             }
-            if(!list.isEmpty()){
-                int last=list.get(list.size()-1);
-                if(Math.abs(nums[i]-last)==1){
+            if (!list.isEmpty()) {
+                int last = list.get(list.size() - 1);
+                if (Math.abs(nums[i] - last) == 1) {
                     continue;
                 }
             }
-            visited[i]=true;
+            visited[i] = true;
             list.add(nums[i]);
-            adjencntWithNoAbsoluteDiff(nums,visited,list,store);
-            list.remove(list.size()-1);
-            visited[i]=false;
+            adjencntWithNoAbsoluteDiff(nums, visited, list, store);
+            list.remove(list.size() - 1);
+            visited[i] = false;
         }
+    }
+
+    void swapAdjacent(String s, ArrayList<String> list) {
+
+        for (int i = 0; i < s.length() - 1; i++) {
+            String swapped = swap(s, i, i + 1);
+            list.add(swapped);
+        }
+
+    }
+
+    void swapAdjacent2(int i, String s, ArrayList<String> list) {
+
+        list.add(s); // store current string
+
+        if (i >= s.length() - 1) {
+            return;
+        }
+
+        // swap adjacent (i, i+1)
+        String swapped = swap(s, i, i + 1);
+
+        swapAdjacent2(i + 1, swapped, list);
+    }
+
+    void permutationWithRepationWithKLength(int[] nums, int k, ArrayList<Integer> list, ArrayList<ArrayList<Integer>> store) {
+        if (k == list.size()) {
+            store.add(new ArrayList<>(list));
+            return;
+        }
+        for (int i = 0; i < nums.length; i++) {
+            list.add(nums[i]);
+            permutationWithRepationWithKLength(nums, k, list, store);
+            list.remove(list.size() - 1);
+        }
+    }
+
+    void combinationWithRepetationWithKLength(int i, int[] nums, int k, ArrayList<Integer> list, ArrayList<ArrayList<Integer>> store) {
+        if (i >= nums.length) {
+            return;
+        }
+        if (k == list.size()) {
+            store.add(new ArrayList<>(list));
+            return;
+        }
+        list.add(nums[i]);
+        combinationWithRepetationWithKLength(i , nums, k, list, store);
+        list.remove(list.size() - 1);
+        combinationWithRepetationWithKLength(i + 1, nums, k, list, store);
     }
 
     public static void main(String[] args) {
@@ -275,7 +328,7 @@ public class Recursion {
         ArrayList<String> list1 = new ArrayList<>();
         r.letterCase(0, "a1b2", new StringBuilder(""), list1);
         System.out.println(list1);
-        int[] nums = new int[]{1, 2, 3,4};
+        int[] nums = new int[]{1, 2, 3, 4};
         ArrayList<Integer> list2 = new ArrayList<>();
         boolean[] visited1 = new boolean[nums.length];
         r.permutation2(nums, visited1, list2, store);
@@ -304,7 +357,21 @@ public class Recursion {
         r.permutationWithKLengthList(nums, 2, 5, visited5, new ArrayList<>(), store4);
         System.out.println(store4);
         ArrayList<ArrayList<Integer>> store5 = new ArrayList<>();
-        r.adjencntWithNoAbsoluteDiff(nums,new boolean[nums.length],new ArrayList<>(),store5);
+        r.adjencntWithNoAbsoluteDiff(nums, new boolean[nums.length], new ArrayList<>(), store5);
         System.out.println(store5);
+        ArrayList<String> list7 = new ArrayList<>();
+        r.swapAdjacent("abc", list7);
+        System.out.println(list7);
+        ArrayList<String> list8 = new ArrayList<>();
+        r.swapAdjacent2(0, "abc", list8);
+        System.out.println(list8);
+        int[] nums2 = new int[]{1, 2, 3};
+        ArrayList<ArrayList<Integer>> store6 = new ArrayList<>();
+        r.permutationWithRepationWithKLength(nums2, 2, new ArrayList<>(), store6);
+        System.out.println(store6);
+        ArrayList<ArrayList<Integer>> store7 = new ArrayList<>();
+        r.combinationWithRepetationWithKLength(0, nums2, 2, new ArrayList<>(), store7);
+        System.out.println(store7);
+
     }
 }

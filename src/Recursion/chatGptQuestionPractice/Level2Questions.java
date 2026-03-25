@@ -20,7 +20,14 @@ public class Level2Questions {
         }
         return pallidrome(str, s + 1, e - 1);
     }
+ public static String swap(String s,int i,int j){
+        char[] c=s.toCharArray();
+        char temp=c[i];
+        c[i]=c[j];
+        c[j]=temp;
 
+        return  new String(c);
+ }
     int maximum(int[] arr, int max, int i) {
         if (arr.length == i) {
             return max;
