@@ -303,9 +303,77 @@ public class Recursion {
             return;
         }
         list.add(nums[i]);
-        combinationWithRepetationWithKLength(i , nums, k, list, store);
+        combinationWithRepetationWithKLength(i, nums, k, list, store);
         list.remove(list.size() - 1);
         combinationWithRepetationWithKLength(i + 1, nums, k, list, store);
+    }
+
+    void island(int[][] grid, int i, int j, int n, int m) {
+        if (i < 0 || j < 0 || i >= n || j >= m) {
+            return;
+        }
+        if (grid[i][j] == 0) {
+            return;
+        }
+
+        grid[i][j] = 0;
+        int[] dx={-1,0,1,0};
+        int[] dy={0,1,0,-1};
+        for(int d=0;d<4;d++){
+            island(grid,i+dx[d],j+dy[d],n,m);
+        }
+       /* island(grid, i + 1, j, n, m);
+        island(grid, i, j + 1, n, m);
+        island(grid, i - 1, j, n, m);
+        island(grid, i, j - 1, n, m);*/
+
+    }
+
+    int countNumberOfIsland(int[][] grid, int n, int m) {
+        int numberOfIsland = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (grid[i][j] == 1) {
+                    island(grid, i, j, n, m);
+                    numberOfIsland++;
+                }
+            }
+        }
+        return numberOfIsland;
+    }
+
+    int sizeOfIsland(int[][] grid, int i, int j, int n, int m) {
+        if (i < 0 || j < 0 || i >= n || j >= m) {
+            return 0;
+        }
+        if (grid[i][j] == 0) {
+            return 0;
+        }
+        grid[i][j] = 0;
+        int count = 1;
+        count += sizeOfIsland(grid, i + 1, j, n, m);
+        count += sizeOfIsland(grid, i, j + 1, n, m);
+        count += sizeOfIsland(grid, i - 1, j, n, m);
+        count += sizeOfIsland(grid, i, j - 1, n, m);
+        return count;
+    }
+
+    int maxmimumSizeOfIsland(int[][] grid) {
+        int max = 0;
+        int n = grid.length;
+        int m = grid[0].length;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (grid[i][j] == 1) {
+                    int size = sizeOfIsland(grid, i, j, n, m);
+                  //  System.out.println(size);
+                    if (max < size) {
+                        max = size;
+                    }
+                }
+            }
+        }
+        return max;
     }
 
     public static void main(String[] args) {
@@ -372,6 +440,21 @@ public class Recursion {
         ArrayList<ArrayList<Integer>> store7 = new ArrayList<>();
         r.combinationWithRepetationWithKLength(0, nums2, 2, new ArrayList<>(), store7);
         System.out.println(store7);
+        int[][] grid = new int[][]{
+                {1, 1, 0},
+                {1, 0, 1},
+                {0, 1, 0}
+        };
+        int[][] grid1 = new int[][]{
+                {1, 1, 0},
+                {1, 0, 1},
+                {0, 1, 0}
+        };
+
+        boolean[][] visited7 = new boolean[3][3];
+        System.out.println(r.countNumberOfIsland(grid, 3, 3));
+
+        System.out.println(r.maxmimumSizeOfIsland(grid1));
 
     }
 }

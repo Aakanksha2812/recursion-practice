@@ -137,23 +137,50 @@ public class DFS {
         visited[i][j] = false;
         sb.deleteCharAt(sb.length() - 1);
     }
-boolean searchWord(int i,int j,int n,int m,char[][] mat,String word,int k,boolean[][] visited){
-    if (i<0 ||j<0|| i >= n || j >= m) {
-        return false;
-    }
-    if(visited[i][j] ||mat[i][j]!=word.charAt(k)){
-        return false;
-    }
-   if(k==word.length()-1){
 
-       return true;
-   }
-   visited[i][j]=true;
-    boolean found=searchWord(i+1,j,n,m,mat,word,k+1,visited) ||searchWord(i,j+1,n,m,mat,word,k+1,visited)||
-            searchWord(i-1,j,n,m,mat,word,k+1,visited)||searchWord(i,j-1,n,m,mat,word,k+1,visited);
-    visited[i][j]=false;
-    return found;
-}
+    boolean searchWord(int i, int j, int n, int m, char[][] mat, String word, int k, boolean[][] visited) {
+        if (i < 0 || j < 0 || i >= n || j >= m) {
+            return false;
+        }
+        if (visited[i][j] || mat[i][j] != word.charAt(k)) {
+            return false;
+        }
+        if (k == word.length() - 1) {
+
+            return true;
+        }
+        visited[i][j] = true;
+        boolean found = searchWord(i + 1, j, n, m, mat, word, k + 1, visited) || searchWord(i, j + 1, n, m, mat, word, k + 1, visited) ||
+                searchWord(i - 1, j, n, m, mat, word, k + 1, visited) || searchWord(i, j - 1, n, m, mat, word, k + 1, visited);
+        visited[i][j] = false;
+        return found;
+    }
+
+    boolean wordSearch(char[][] grid, int i, int j, int n, int m, int k, String s, boolean[][] visited) {
+        if (i < 0 || j < 0 || i >= n || j >= m) {
+            return false;
+        }
+        if (visited[i][j] || grid[i][j]!=s.charAt(k)) {
+            return false;
+        }
+        if(k==s.length()-1){
+            return true;
+        }
+        visited[i][j] = true;
+
+        int[] dx = {1, 0, -1, 0};
+        int[] dy = {0, 1, 0, -1};
+
+        for (int d = 0; d < 4; d++) {
+          if(wordSearch(grid, i + dx[d], j + dy[d], n, m, k+1, s, visited)){
+            visited[i][j] = false;
+            return true;
+        }}
+
+        visited[i][j] = false;
+        return false;
+    }
+
     public static void main(String args[]) {
         DFS d = new DFS();
         char[][] grid = new char[][]{
@@ -201,7 +228,9 @@ boolean searchWord(int i,int j,int n,int m,char[][] mat,String word,int k,boolea
         ArrayList<String> list2 = new ArrayList<>();
         d.createWordWithfourDireaction(0, 0, n2, m2, mat1, new StringBuilder(""), visited1, list2);
         System.out.println(list2);
-        boolean[][] visited2=new boolean[n2][m2];
-        System.out.println(d.searchWord(0,0,n2,m2,mat1,"ABCEFI",0,visited2));
+        boolean[][] visited2 = new boolean[n2][m2];
+        System.out.println(d.searchWord(0, 0, n2, m2, mat1, "ABCEFI", 0, visited2));
+        boolean[][] visited3 = new boolean[n2][m2];
+        System.out.println(d.wordSearch(mat1,0,0,3,3,0,"ABCFI",visited3));
     }
 }
