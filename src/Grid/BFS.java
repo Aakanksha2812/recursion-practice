@@ -143,9 +143,10 @@ public class BFS {
                 }
             }
         }
+        int[][] dir = new int[][]{{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
         while (!zero.isEmpty()) {
             int[] cell = zero.poll();
-            int[][] dir = new int[][]{{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+
             for (int[] d : dir) {
                 int ni = cell[0] + d[0];
                 int nj = cell[1] + d[1];
@@ -157,6 +158,62 @@ public class BFS {
             }
         }
         return grid;
+    }
+
+    void shortestDistance(int[][] grid) {
+        Queue<int[]> queue = new LinkedList<>();
+
+        int n = grid.length;
+        int m = grid[0].length;
+        if(grid==null || n==0){
+            return;
+        }
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (grid[i][j] == 0) {
+                    queue.add(new int[]{i, j});
+                }
+            }
+        }
+        int[][] dir = new int[][]{{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+        while (!queue.isEmpty()) {
+            int[] cell = queue.poll();
+            for (int[] d : dir) {
+                int ni = cell[0] + d[0];
+                int nj = cell[1] + d[1];
+                if (ni >= 0 && nj >= 0 && ni < n && nj < m && grid[ni][nj] == 2147483647) {
+                    grid[ni][nj] = grid[cell[0]][cell[1]] + 1;
+
+                    queue.add(new int[]{ni, nj});
+                }
+            }
+        }
+    }
+
+    void fillColour(int[][] grid, int i, int j, int newColor) {
+        Queue<int[]> colorCell = new LinkedList<>();
+        int n = grid.length;
+        int m = grid[0].length;
+        int storeColor = grid[i][j];
+        grid[i][j] = newColor;
+        if (storeColor == newColor) {
+            return;
+        }
+        colorCell.add(new int[]{i, j});
+        int[][] dir = new int[][]{{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+        while (!colorCell.isEmpty()) {
+            int[] cell = colorCell.poll();
+
+            for (int[] d : dir) {
+                int ni = cell[0] + d[0];
+                int nj = cell[1] + d[1];
+                if (ni >= 0 && nj >= 0 && ni < n && nj < m && grid[ni][nj] == storeColor) {
+                    grid[ni][nj] = newColor;
+                    colorCell.add(new int[]{ni, nj});
+                }
+            }
+        }
     }
 
     public static void main(String[] args) {
@@ -176,7 +233,7 @@ public class BFS {
         System.out.println("Hi");
         System.out.println("number of island " + b.numberOfIslan(grid1));
         int[][] grid2 = new int[][]{
-                {0, 0, 0},
+                {1, 0, 0},
                 {0, 1, 0},
                 {1, 1, 1},
         };
@@ -187,6 +244,32 @@ public class BFS {
             }
             System.out.println();
         }
-
+        int[][] grid3 = new int[][]{
+                {1, 0, 0},
+                {0, 1, 0},
+                {1, 1, 1},
+        };
+        System.out.println("flood fill");
+        b.fillColour(grid3, 1, 1, 2);
+        for (int i = 0; i < grid3.length; i++) {
+            for (int j = 0; j < grid3[0].length; j++) {
+                System.out.print(grid3[i][j] + " ");
+            }
+            System.out.println();
+        }
+        int[][] Input = new int[][]
+                {
+                        {2147483647, -1, 0, 2147483647},
+                        {2147483647, 2147483647, 2147483647, -1},
+                        {2147483647, -1, 2147483647, -1},
+                        {0, -1, 2147483647, 2147483647}
+                };
+        b.shortestDistance(Input);
+        for (int i = 0; i < Input.length; i++) {
+            for (int j = 0; j < Input[0].length; j++) {
+                System.out.print(Input[i][j] + " ");
+            }
+            System.out.println();
+        }
     }
 }
