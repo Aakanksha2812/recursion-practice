@@ -160,10 +160,10 @@ public class DFS {
         if (i < 0 || j < 0 || i >= n || j >= m) {
             return false;
         }
-        if (visited[i][j] || grid[i][j]!=s.charAt(k)) {
+        if (visited[i][j] || grid[i][j] != s.charAt(k)) {
             return false;
         }
-        if(k==s.length()-1){
+        if (k == s.length() - 1) {
             return true;
         }
         visited[i][j] = true;
@@ -172,13 +172,29 @@ public class DFS {
         int[] dy = {0, 1, 0, -1};
 
         for (int d = 0; d < 4; d++) {
-          if(wordSearch(grid, i + dx[d], j + dy[d], n, m, k+1, s, visited)){
-            visited[i][j] = false;
-            return true;
-        }}
+            if (wordSearch(grid, i + dx[d], j + dy[d], n, m, k + 1, s, visited)) {
+                //    visited[i][j] = false;
+                return true;
+            }
+        }
 
         visited[i][j] = false;
         return false;
+    }
+
+    void combinationSum(int i, int[] num, int target, ArrayList<Integer> list, ArrayList<ArrayList<Integer>> store) {
+        if (target == 0) {
+            store.add(new ArrayList<>(list));
+            return;
+        }
+        if (target < 0 || i == num.length) {
+            return;
+        }
+        list.add(num[i]);
+        combinationSum(i, num, target - num[i], list, store);
+        list.remove(list.size() - 1);
+        combinationSum(i + 1, num, target, list, store);
+
     }
 
     public static void main(String args[]) {
@@ -219,6 +235,11 @@ public class DFS {
                 {'D', 'E', 'F'},
                 {'G', 'H', 'I'}
         };
+        char[][] mat2 = new char[][]{
+                {'A', 'B', 'C'},
+                {'A', 'E', 'D'}
+
+        };
         int n2 = mat1.length;
         int m2 = mat1[0].length;
         ArrayList<String> list = new ArrayList<>();
@@ -231,6 +252,10 @@ public class DFS {
         boolean[][] visited2 = new boolean[n2][m2];
         System.out.println(d.searchWord(0, 0, n2, m2, mat1, "ABCEFI", 0, visited2));
         boolean[][] visited3 = new boolean[n2][m2];
-        System.out.println(d.wordSearch(mat1,0,0,3,3,0,"ABCFI",visited3));
+        System.out.println(d.wordSearch(mat2, 0, 0, 2, 3, 0, "ABED", visited3));
+        ArrayList<ArrayList<Integer>> store1 = new ArrayList<>();
+        int[] nums = new int[]{2, 3, 6, 7};
+        d.combinationSum(0, nums, 7, new ArrayList<>(), store1);
+        System.out.println(store1);
     }
 }

@@ -47,4 +47,146 @@ public class BFS {
 
         return fresh == 0 ? minutes : -1;
     }
+
+    int orangeRoatting1(int[][] grid) {
+        Queue<int[]> rotten = new LinkedList<>();
+        int fresh = 0;
+        int time = 0;
+        int row = grid.length;
+        int col = grid[0].length;
+
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                if (grid[i][j] == 2) {
+                    rotten.add(new int[]{i, j});
+                }
+                if (grid[i][j] == 1) {
+                    fresh++;
+                }
+            }
+        }
+
+        int[][] dir = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+
+        while (!rotten.isEmpty() && fresh > 0) {
+            int size = rotten.size();
+            boolean rottedThisRound = false;  // ⭐ important
+
+            for (int i = 0; i < size; i++) {
+                int[] cell = rotten.poll();
+                int r = cell[0], c = cell[1];
+
+                for (int[] d : dir) {
+                    int nr = r + d[0];
+                    int nc = c + d[1];
+
+                    if (nr >= 0 && nc >= 0 && nr < row && nc < col && grid[nr][nc] == 1) {
+                        grid[nr][nc] = 2;
+                        rotten.add(new int[]{nr, nc});
+                        fresh--;
+                        rottedThisRound = true; // ⭐ mark change
+                    }
+                }
+            }
+
+            if (rottedThisRound) time++;  // ⭐ increment only if spread happened
+        }
+
+        return fresh == 0 ? time : -1;
+    }
+
+    void bfsIsland(int[][] grid, int i, int j, int n, int m) {
+        Queue<int[]> pos = new LinkedList<>();
+        pos.add(new int[]{i, j});
+        grid[i][j] = 0;
+        int[][] dir = new int[][]{{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+        while (!pos.isEmpty()) {
+            int[] cell = pos.poll();
+            for (int[] d : dir) {
+                int ni = cell[0] + d[0];
+                int nj = cell[1] + d[1];
+                if (ni >= 0 && nj >= 0 && ni < n && nj < m && grid[ni][nj] == 1) {
+                    grid[ni][nj] = 0;
+                    pos.add(new int[]{ni, nj});
+                }
+            }
+        }
+    }
+
+    int numberOfIslan(int[][] grid) {
+        int n = grid.length;
+        int m = grid[0].length;
+        int countIsland = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (grid[i][j] == 1) {
+
+                    countIsland++;
+                    System.out.println("found " + countIsland);
+                    bfsIsland(grid, i, j, n, m);
+                }
+            }
+        }
+        return countIsland;
+    }
+
+    int[][] distanceZeroMatrix(int[][] grid) {
+        int n = grid.length;
+        int m = grid[0].length;
+        boolean[][] visited = new boolean[n][m];
+        Queue<int[]> zero = new LinkedList<>();
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (grid[i][j] == 0) {
+                    visited[i][j] = true;
+                    zero.add(new int[]{i, j});
+                }
+            }
+        }
+        while (!zero.isEmpty()) {
+            int[] cell = zero.poll();
+            int[][] dir = new int[][]{{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+            for (int[] d : dir) {
+                int ni = cell[0] + d[0];
+                int nj = cell[1] + d[1];
+                if (ni >= 0 && nj >= 0 && ni < n && nj < m && !visited[ni][nj]) {
+                    grid[ni][nj] = grid[cell[0]][cell[1]] + 1;
+                    zero.add(new int[]{ni, nj});
+                    visited[ni][nj] = true;
+                }
+            }
+        }
+        return grid;
+    }
+
+    public static void main(String[] args) {
+        BFS b = new BFS();
+        int[][] grid = new int[][]{
+                {2, 1, 1},
+                {1, 1, 0},
+                {0, 1, 1}
+        };
+        // System.out.println( b.orangeRoatting1(grid));
+        int[][] grid1 = new int[][]{
+                {1, 1, 0},
+                {1, 0, 1},
+                {0, 1, 1},
+                {1, 0, 0}
+        };
+        System.out.println("Hi");
+        System.out.println("number of island " + b.numberOfIslan(grid1));
+        int[][] grid2 = new int[][]{
+                {0, 0, 0},
+                {0, 1, 0},
+                {1, 1, 1},
+        };
+        b.distanceZeroMatrix(grid2);
+        for (int i = 0; i < grid2.length; i++) {
+            for (int j = 0; j < grid2[0].length; j++) {
+                System.out.print(grid2[i][j] + " ");
+            }
+            System.out.println();
+        }
+
+    }
 }
