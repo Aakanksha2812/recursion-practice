@@ -198,11 +198,11 @@ public class BFS {
         boolean visited[][] = new boolean[n][m];
         visited[0][0] = true;
         int time = 0;
-        if(grid[0][0]==1 && grid[n-1][m-1]==1){
+        if (grid[0][0] == 1 || grid[n - 1][m - 1] == 1) {
             return -1;
         }
         queue.add(new int[]{i, j});
-        int[][] dir = new int[][]{{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+        int[][] dir = new int[][]{{1, 0}, {-1, 0}, {0, 1}, {0, -1}, {-1, -1}, {-1, 1}, {1, -1}, {1, 1}};
         while (!queue.isEmpty()) {
             int size = queue.size();
             for (int k = 0; k < size; k++) {
@@ -215,11 +215,11 @@ public class BFS {
                     int nj = cell[1] + d[1];
                     if (ni >= 0 && nj >= 0 && ni < n && nj < m && !visited[ni][nj] && grid[ni][nj] == 0) {
                         queue.add(new int[]{ni, nj});
-                        visited[ni][nj]=true;
+                        visited[ni][nj] = true;
                     }
                 }
             }
-                time++;
+            time++;
         }
         return -1;
     }
@@ -289,6 +289,145 @@ public class BFS {
         return fresh == 0 ? time : -1;
     }
 
+    int nearstLandCell(int[][] grid) {
+        int n = grid.length;
+        int m = grid[0].length;
+
+        Queue<int[]> zero = new LinkedList<>();
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (grid[i][j] == 1) {
+
+                    zero.add(new int[]{i, j});
+                }
+            }
+        }
+        int max = -1;
+        int[][] dir = new int[][]{{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+        while (!zero.isEmpty()) {
+            int[] cell = zero.poll();
+
+            for (int[] d : dir) {
+                int ni = cell[0] + d[0];
+                int nj = cell[1] + d[1];
+                if (ni >= 0 && nj >= 0 && ni < n && nj < m && grid[ni][nj] == 0) {
+                    grid[ni][nj] = grid[cell[0]][cell[1]] + 1;
+                    if (max < grid[ni][nj]) {
+                        max = grid[ni][nj];
+                    }
+                    zero.add(new int[]{ni, nj});
+
+                }
+            }
+        }
+        return max - 1;
+    }
+
+    int nearstLandCell2(int[][] grid) {
+        int n = grid.length;
+        int m = grid[0].length;
+
+        Queue<int[]> zero = new LinkedList<>();
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (grid[i][j] == 1) {
+                    zero.add(new int[]{i, j});
+                }
+            }
+        }
+        int max = -1;
+        int[][] dir = new int[][]{{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+        while (!zero.isEmpty()) {
+            int size = zero.size();
+            max++;
+            for (int i = 0; i < size; i++) {
+                int[] cell = zero.poll();
+                for (int[] d : dir) {
+                    int ni = cell[0] + d[0];
+                    int nj = cell[1] + d[1];
+                    if (ni >= 0 && nj >= 0 && ni < n && nj < m && grid[ni][nj] == 0) {
+                        grid[ni][nj] = 1;
+                        zero.add(new int[]{ni, nj});
+                    }
+                }
+            }
+        }
+        return max;
+    }
+
+    void bfs(char[][] board, int i, int j, int n, int m) {
+        Queue<int[]> q = new LinkedList<>();
+        q.add(new int[]{i, j});
+        board[i][j] = 'X';
+        int[][] dir = new int[][]{{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+        while (!q.isEmpty()) {
+            int[] cel = q.poll();
+            for (int[] d : dir) {
+                int ni = cel[0] + d[0];
+                int nj = cel[1] + d[1];
+                if (ni > 0 && nj > 0 && ni < n && nj < m && board[ni][nj] == 'O') {
+                    board[ni][nj] = 'X';
+                    q.add(new int[]{ni, nj});
+                }
+            }
+        }
+    }
+
+    public void solve(char[][] board) {
+        int n = board.length - 1;
+        int m = board[0].length - 1;
+        if (n == 0 || m == 0) {
+            return;
+        }
+        for (int i = 1; i < n; i++) {
+            for (int j = 1; j < m; j++) {
+                if (board[i][j] == 'O') {
+                    bfs(board, i, j, n, m);
+                }
+            }
+        }
+        //   return board;
+
+    }
+
+    void bfsProvinces(int[][] grid, int i, int j) {
+        int n = grid.length;
+        int m = grid[0].length;
+        Queue<int[]> queue = new LinkedList<>();
+        queue.add(new int[]{i, j});
+
+        int[][] dir = new int[][]{{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+
+        while (!queue.isEmpty()) {
+            int[] cell = queue.poll();
+            for (int[] d : dir) {
+                int ni = cell[0] + d[0];
+                int nj = cell[1] + d[1];
+                if (ni >= 0 && nj >= 0 && ni < n && nj < m && grid[ni][nj] == 1) {
+                    grid[ni][nj] = 0;
+                    queue.add(new int[]{ni, nj});
+
+                }
+            }
+        }
+    }
+
+    int numberOfProvinces(int[][] grid) {
+        int n = grid.length;
+        int m = grid[0].length;
+        int count = 0;
+        boolean[][] visited = new boolean[n][m];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (grid[i][j] == 1 && !visited[i][j]) {
+                    bfsProvinces(grid, i, j);
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
     public static void main(String[] args) {
         BFS b = new BFS();
 
@@ -309,7 +448,6 @@ public class BFS {
                 {0, 1, 1},
                 {1, 0, 0}
         };
-        System.out.println("Hi");
         System.out.println("number of island " + b.numberOfIslan(grid1));
         int[][] grid2 = new int[][]{
                 {1, 0, 0},
@@ -358,5 +496,34 @@ public class BFS {
                 {0, 0, 0},
         };
         System.out.println(b.shortestPath(grid5, 0, 0));
+        int[][] grid6 = new int[][]{
+                {1, 0, 1},
+                {0, 0, 0},
+                {1, 0, 1}
+        };
+        System.out.println(b.nearstLandCell(grid6));
+        System.out.println(b.nearstLandCell2(grid6));
+      /*  for (int i = 0; i < grid6.length; i++) {
+            for (int j = 0; j < grid6[0].length; j++) {
+                System.out.print(grid6[i][j] + " ");
+            }
+            System.out.println();
+        }*/
+        int[][] grid7 = new int[][]{
+                {1, 1, 1},
+                {1, 1, 0},
+                {1, 0, 1}
+        };
+        System.out.println(b.numberOfProvinces(grid7));
+        char[][] grid8 = new char[][]{
+                {'O', 'O'}, {'O', 'O'}
+        };
+        b.solve(grid8);
+        for (int i = 0; i < grid8.length; i++) {
+            for (int j = 0; j < grid8[0].length; j++) {
+                System.out.print(grid8[i][j] + " ");
+            }
+            System.out.println();
+        }
     }
 }
