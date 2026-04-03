@@ -128,7 +128,9 @@ public class BFS {
         boolean[] visited = new boolean[n];
         for (int i = 0; i < n; i++) {
             if (!visited[i]) {
-                return cycleBfs(i, visited, adj);
+                if( cycleBfs(i, visited, adj)){
+                    return true;
+                }
             }
         }
         return false;
