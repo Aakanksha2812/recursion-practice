@@ -225,40 +225,7 @@ public class BFS {
         }
     }
 
-    int connectedComponent(int[][] grid, int length) {
-        int count = 0;
-        ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
-        for (int i = 0; i < length; i++) {
-            adj.add(new ArrayList<>());
-        }
-        for (int[] edge : grid) {
-            int u = edge[0];
-            int v = edge[1];
-            adj.get(u).add(v);
-            adj.get(v).add(u);
-        }
 
-        boolean[] visited = new boolean[length];
-        for (int i = 0; i < length; i++) {
-            if (!visited[i]) {
-                count++;
-                dfsConncted(i, visited, adj);
-            }
-
-        }
-        return count;
-    }
-
-    void dfsConncted(int i, boolean[] visited, ArrayList<ArrayList<Integer>> adj) {
-
-        visited[i]=true;
-        for (int neighbor:adj.get(i)){
-            if (!visited[neighbor]){
-
-                dfsConncted(neighbor,visited,adj);
-            }
-        }
-    }
 
     public static void main(String[] args) {
         BFS b = new BFS();
@@ -308,9 +275,6 @@ public class BFS {
                 {0, 0, 0, 0}
         };
         System.out.println("number of island " + b.numIslands(grid));
-        int[][] edges5 = new int[][]
-                {{0, 1}, {1, 2}, {3, 4}
-                };
-        System.out.println(b.connectedComponent(edges5, 5));
+
     }
 }
