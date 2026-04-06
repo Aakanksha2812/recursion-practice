@@ -81,19 +81,19 @@ public class DFS {
 
     int noOfProvince(int[][] grid) {
         int n = grid.length;
-        int m = grid[0].length;
         boolean[] visited = new boolean[n];
         int count = 0;
         for (int i = 0; i < n; i++) {
             if (!visited[i]) {
                 count++;
                 dfs(i, grid, visited, n);
-
             }
         }
         return count;
     }
+/*boolean isCycle(int n,int[][] edges){
 
+}*/
     public static void main(String[] args) {
         DFS d = new DFS();
         int[][] edges5 = new int[][]
