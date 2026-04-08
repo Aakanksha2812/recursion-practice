@@ -135,7 +135,28 @@ public class Practice {
             step = Math.min(step, minStep(n / 3, dp));
         }
         dp[n] = 1 + step;
+
         return dp[n];
+    }
+
+    int minStepTab(int n) {
+        int[] dp = new int[n + 1];
+        dp[0] = 0;
+        dp[1] = 0;
+
+        for (int i = 2; i <= n; i++) {
+            int step = dp[i - 1];
+            if (i % 2 == 0) {
+                step = Math.min(step, dp[i / 2]);
+            }
+            if (i % 3 == 0) {
+                step = Math.min(step, dp[i / 3]);
+            }
+            dp[i] = 1 + step;
+        }
+
+        return dp[n];
+
     }
 
     public static void main(String[] args) {
@@ -154,10 +175,11 @@ public class Practice {
         System.out.println(p.nonAdjencentGreaterSum(nums1));
         int[] nums2 = new int[]{10, 20, 30, 10};
         System.out.println(p.frogJump(nums2));
-        int n1=10;
-        int[] dp1 = new int[n1+1];
-        Arrays.fill(dp1,-1);
-        System.out.println("Minimum steps to reach " + p.minStep(n1,dp1));
+        int n1 = 10;
+        int[] dp1 = new int[n1 + 1];
+        Arrays.fill(dp1, -1);
+        System.out.println("Minimum steps to reach " + p.minStep(n1, dp1));
+        System.out.println("Minimum steps to reach " + p.minStepTab(n1));
 
 
     }
