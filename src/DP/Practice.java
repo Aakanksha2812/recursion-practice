@@ -14,6 +14,7 @@ public class Practice {
         return dp[n];
     }
 
+
     int stairCaseTab(int n) {
         int[] dp = new int[n + 1];
         dp[0] = 1;
@@ -78,14 +79,63 @@ public class Practice {
         if (l == 1) {
             return nums[0];
         }
-        int prev2=nums[0];
-        int prev1=Math.max(nums[0], nums[1]);
-        for (int i=2;i<l;i++){
-            int curr=Math.max(nums[i]+prev2,prev1);
-            prev2=prev1;
-            prev1=curr;
+        int prev2 = nums[0];
+        int prev1 = Math.max(nums[0], nums[1]);
+        for (int i = 2; i < l; i++) {
+            int curr = Math.max(nums[i] + prev2, prev1);
+            prev2 = prev1;
+            prev1 = curr;
         }
-        return  prev1;
+        return prev1;
+    }
+
+    int nonAdjencentGreaterSum(int[] num) {
+        int n = num.length;
+        int[] dp = new int[n];
+        Arrays.fill(dp, -1);
+        return solve(n - 1, num, dp);
+    }
+
+    int solve2(int i, int[] nums, int[] dp) {
+        if (i < 0) {
+            return 0;
+        }
+        if (dp[i] != -1) {
+            return dp[i];
+        }
+        int pick = Math.abs(nums[i] - solve2(i - 2, nums, dp));
+        int skip = solve2(i - 1, nums, dp);
+        dp[i] = Math.min(pick, skip);
+        return dp[i];
+    }
+
+    int frogJump(int[] nums) {
+        int n = nums.length;
+        int[] dp = new int[n];
+        Arrays.fill(dp, -1);
+        int ans = solve2(n - 1, nums, dp);
+//        for (int i=0;i<dp.length;i++){
+//            System.out.print(dp[i]+" ");
+//        }
+        return ans;
+    }
+
+    int minStep(int n, int[] dp) {
+        if (n == 1) {
+            return 0;
+        }
+        if (dp[n] != -1) {
+            return dp[n];
+        }
+        int step = minStep(n - 1, dp);
+        if (n % 2 == 0) {
+            step = Math.min(step, minStep(n / 2, dp));
+        }
+        if (n % 3 == 0) {
+            step = Math.min(step, minStep(n / 3, dp));
+        }
+        dp[n] = 1 + step;
+        return dp[n];
     }
 
     public static void main(String[] args) {
@@ -97,9 +147,18 @@ public class Practice {
         System.out.println(" ways Avilable " + p.stairCaseTab(n));
         System.out.println(" ways Avlanle " + p.stairCaseSpace(n));
         int[] nums = new int[]{2, 7, 9, 3, 1};
+        int[] nums1 = new int[]{3, 2, 7, 10};
         System.out.println("Memozation " + p.rob(nums));
         System.out.println("Tabulation " + p.robTab(nums));
-        System.out.println("Space Optamazation "+p.robSpace(nums));
+        System.out.println("Space Optamazation " + p.robSpace(nums));
+        System.out.println(p.nonAdjencentGreaterSum(nums1));
+        int[] nums2 = new int[]{10, 20, 30, 10};
+        System.out.println(p.frogJump(nums2));
+        int n1=10;
+        int[] dp1 = new int[n1+1];
+        Arrays.fill(dp1,-1);
+        System.out.println("Minimum steps to reach " + p.minStep(n1,dp1));
+
 
     }
 }
