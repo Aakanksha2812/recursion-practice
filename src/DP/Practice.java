@@ -159,6 +159,34 @@ public class Practice {
 
     }
 
+    int waysToReach(int n, int[] dp) {
+        if (n == 0) {
+            return 1;
+        }
+        if (n == 1) {
+            return 1;
+        }
+        if (dp[n] != -1) {
+            return dp[n];
+        }
+        dp[n] = waysToReach(n - 1, dp) + waysToReach(n - 2, dp);
+        return dp[n];
+    }
+
+    int minimumCost(int n, int[] cost, int[] dp) {
+        if (n == 0) {
+            return cost[0];
+        }
+        if (n == 1) {
+            return cost[1];
+        }
+        if (dp[n] != -1) {
+            return dp[n];
+        }
+        dp[n] = cost[n] + Math.min(minimumCost(n - 1, cost, dp), minimumCost(n - 2, cost, dp));
+        return dp[n];
+    }
+
     public static void main(String[] args) {
         Practice p = new Practice();
         int n = 3;
@@ -180,7 +208,14 @@ public class Practice {
         Arrays.fill(dp1, -1);
         System.out.println("Minimum steps to reach " + p.minStep(n1, dp1));
         System.out.println("Minimum steps to reach " + p.minStepTab(n1));
-
+        int n2 = 4;
+        int[] dp2 = new int[n2 + 1];
+        Arrays.fill(dp2, -1);
+        System.out.println("ways to reach N " + p.waysToReach(n2, dp2));
+        int[] cost = new int[]{1, 100, 1, 1, 1};
+        int[] dp3 = new int[cost.length];
+        Arrays.fill(dp3, -1);
+        System.out.println("minimu cost to reach " + p.minimumCost(cost.length - 1, cost, dp3));
 
     }
 }
