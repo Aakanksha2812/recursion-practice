@@ -27,7 +27,6 @@ public class GridDP {
     }
 
     int minPathSum(int[][] grid, int i, int j, int n, int m, int[][] dp) {
-
         if (i >= n || j >= m) {
             return Integer.MAX_VALUE;
         }
