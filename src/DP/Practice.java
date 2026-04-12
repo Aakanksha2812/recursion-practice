@@ -187,6 +187,13 @@ public class Practice {
         return dp[n];
     }
 
+    int minCost(int[] cost) {
+        int n = cost.length;
+        int[] dp = new int[n];
+        Arrays.fill(dp, -1);
+        return Math.min(minimumCost(n - 1, cost, dp), minimumCost(n - 2, cost, dp));
+    }
+
     public static void main(String[] args) {
         Practice p = new Practice();
         int n = 3;
@@ -215,7 +222,7 @@ public class Practice {
         int[] cost = new int[]{1, 100, 1, 1, 1};
         int[] dp3 = new int[cost.length];
         Arrays.fill(dp3, -1);
-        System.out.println("minimu cost to reach " + p.minimumCost(cost.length - 1, cost, dp3));
+        System.out.println("minimu cost to reach " + p.minCost(cost));
 
     }
 }
