@@ -26,6 +26,21 @@ public class GridDP {
         return dp[i][j];
     }
 
+    int minPathSum(int[][] grid, int i, int j, int n, int m, int[][] dp) {
+
+        if (i >= n || j >= m) {
+            return Integer.MAX_VALUE;
+        }
+        if (i == n - 1 && j == m - 1) {
+            return grid[i][j];
+        }
+        if (dp[i][j] != -1) {
+            return dp[i][j];
+        }
+        dp[i][j] = grid[i][j] + Math.min(minPathSum(grid, i + 1, j, n, m, dp), minPathSum(grid, i, j + 1, n, m, dp));
+        return dp[i][j];
+    }
+
     public static void main(String[] args) {
         GridDP g = new GridDP();
         int[][] grid = new int[][]{
@@ -38,6 +53,17 @@ public class GridDP {
         for (int[] arr : dp) {
             Arrays.fill(arr, -1);
         }
+        int[][] grid1 = new int[][]{
+                {1, 3, 1},
+                {1, 5, 1},
+                {4, 2, 1}
+        };
+        int[][] dp1 = new int[3][3];
+        //  boolean[][] visited = new boolean[3][3];
+        for (int[] arr : dp1) {
+            Arrays.fill(arr, -1);
+        }
         System.out.println(g.uniquePath(grid, 0, 0, 3, 3, dp, visited));
+        System.out.println(g.minPathSum(grid1, 0, 0, 3, 3, dp1));
     }
 }
