@@ -222,7 +222,7 @@ public class Practice {
         int[] cost = new int[]{1, 100, 1, 1, 1};
         int[] dp3 = new int[cost.length];
         Arrays.fill(dp3, -1);
-        System.out.println("minimu cost to reach " + p.minCost(cost));
+        System.out.println("minimum cost to reach " + p.minCost(cost));
 
     }
 }
