@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static Print.PrintFunction.printArrayMethod;
+import static Print.PrintFunction.printHashMapMethod;
 
 public class HashMapPractice {
     int[] twoSum(ArrayList<Integer> list, int target) {
@@ -34,6 +35,32 @@ public class HashMapPractice {
 
     }
 
+    boolean identicalList(ArrayList<Integer> list1, ArrayList<Integer> list2) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        if (list2.size() != list1.size()) {
+            return false;
+        }
+        for (int i = 0; i < list1.size(); i++) {
+            map.put(list1.get(i), map.getOrDefault(list1.get(i), 0) + 1);
+
+        }
+
+        for (int i = 0; i < list2.size(); i++) {
+            if (!map.containsKey(list2.get(i))) {
+                return false;
+            }
+            map.put(list2.get(i), map.get(list2.get(i) )- 1);
+        }
+        for (int val:map.values()){
+            if(val!=0){
+                return false;
+            }
+        }
+        return true;
+
+    }
+
+
     public static void main(String[] args) {
         HashMapPractice hm = new HashMapPractice();
         ArrayList<Integer> list = new ArrayList<>(Arrays.asList(2, 7, 11, 15));
@@ -42,6 +69,9 @@ public class HashMapPractice {
         printArrayMethod(ans);
         System.out.println();
         System.out.println("first non repeating elemnet " + hm.frequencyOfElement(list1));
+        ArrayList<Integer> list2 = new ArrayList<>(Arrays.asList(2, 7, 11, 15));
+        ArrayList<Integer> list3 = new ArrayList<>(Arrays.asList(2, 11, 15, 7));
+        System.out.println("list are identical " + hm.identicalList(list2, list3));
     }
 
 
