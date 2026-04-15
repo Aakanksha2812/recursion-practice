@@ -2,6 +2,7 @@ package DP;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
 
 public class Level2 {
     boolean subsetSum(int i, int target, ArrayList<Integer> list, int[][] dp) {
@@ -31,6 +32,63 @@ public class Level2 {
 
     }
 
+    int perfectSquare(int n, int[] dp) {
+        if (n == 0) {
+            return 0;
+        }
+        if (dp[n] != -1) {
+            return dp[n];
+        }
+        int min = Integer.MAX_VALUE;
+        for (int i = 1; i <= n; i++) {
+            if (i * i <= n) {
+                min = Math.min(min, perfectSquare(n - i * i, dp));
+            }
+        }
+        dp[n] = min + 1;
+        return dp[n];
+    }
+
+    /*int coinChange(int[] coins, int amount, int[] dp) {
+        if (amount == 0) {
+            return 0;
+        }
+        if (dp[amount] != -1) {
+            return dp[amount];
+        }
+        if(amount<0 || amount)
+        int min = Integer.MAX_VALUE;
+        for (int i = 0; i < coins.length; i++) {
+            if (coins[i] <= amount) {
+                min = Math.min(min, coinChange(coins, amount - coins[i], dp));
+            }
+        }
+        dp[amount] = min + 1;
+        return dp[amount];
+    }*/
+    int minStepsToZero(int n,int[] dp) {
+        if (n == 0) {
+            return 0;
+        }
+        if (n == 1) {
+            return 1;
+        }
+        if(dp[n]!=-1){
+            return dp[n];
+        }
+        int min=Integer.MAX_VALUE;
+        min = Math.min(min, minStepsToZero(n - 1,dp));
+        if (n - 3 >=0) {
+            min = Math.min(min, minStepsToZero(n - 3,dp));
+        }
+        if (n - 4 >= 0) {
+            min = Math.min(min, minStepsToZero(n - 4,dp));
+        }
+dp[n]=min+1;
+        return dp[n];
+    }
+
+
     public static void main(String[] args) {
         Level2 l = new Level2();
         ArrayList<Integer> list = new ArrayList<>(Arrays.asList(2, 3, 7, 8, 10));
@@ -39,5 +97,16 @@ public class Level2 {
             Arrays.fill(arr, -1);
         }
         System.out.println(l.subsetSum(0, 11, list, dp));
+        int n = 12;
+        int[] dp1 = new int[n + 1];
+        Arrays.fill(dp1, -1);
+        System.out.println("perfect sqaure " + l.perfectSquare(12, dp1));
+        int[] coin = new int[]{1, 2, 5};
+        int amount = 12;
+        int n1=7;
+        int[] dp2 = new int[n1 + 1];
+        Arrays.fill(dp2, -1);
+        //  System.out.println(l.coinChange(coin, amount, dp2));
+        System.out.println("minimum steps to zero " + l.minStepsToZero(7,dp2));
     }
 }
