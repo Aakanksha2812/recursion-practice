@@ -1,9 +1,6 @@
 package Collection;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static Print.PrintFunction.printArrayMethod;
 import static Print.PrintFunction.printHashMapMethod;
@@ -49,10 +46,10 @@ public class HashMapPractice {
             if (!map.containsKey(list2.get(i))) {
                 return false;
             }
-            map.put(list2.get(i), map.get(list2.get(i) )- 1);
+            map.put(list2.get(i), map.get(list2.get(i)) - 1);
         }
-        for (int val:map.values()){
-            if(val!=0){
+        for (int val : map.values()) {
+            if (val != 0) {
                 return false;
             }
         }
@@ -60,6 +57,43 @@ public class HashMapPractice {
 
     }
 
+    int largestConsecutive(int[] nums) {
+        HashSet<Integer> set = new HashSet<>();
+        for (int i = 0; i < nums.length; i++) {
+            set.add(nums[i]);
+        }
+        int maxLen = 0;
+        for (int num : set) {
+            if (!set.contains(num - 1)) {
+                int currnt = num;
+                int count = 0;
+                count = 1;
+                while (set.contains(currnt + 1)) {
+                    currnt++;
+                    count++;
+                }
+                maxLen = Math.max(count, currnt);
+            }
+        }
+        return maxLen;
+    }
+
+    int prefixSum(int[] nums,int k) {
+        HashMap<Integer,Integer> map=new HashMap<>();
+        int sum=0;
+        int count=0;
+        for (int num:nums){
+            sum+=num;
+            if (sum==k){
+                count++;
+            }
+            if (map.containsKey(sum-k)){
+                count+=map.get(sum-k);
+            }
+            map.put(sum,map.getOrDefault(sum,0)+1);
+        }
+        return count;
+    }
 
     public static void main(String[] args) {
         HashMapPractice hm = new HashMapPractice();
@@ -72,6 +106,10 @@ public class HashMapPractice {
         ArrayList<Integer> list2 = new ArrayList<>(Arrays.asList(2, 7, 11, 15));
         ArrayList<Integer> list3 = new ArrayList<>(Arrays.asList(2, 11, 15, 7));
         System.out.println("list are identical " + hm.identicalList(list2, list3));
+        int[] nums2 = new int[]{100, 1, 200, 2, 3, 4};
+        System.out.println(hm.largestConsecutive(nums2));
+        int[] nums3=new int[]{1,1,1};
+        System.out.println(hm.prefixSum(nums3,2));
     }
 
 

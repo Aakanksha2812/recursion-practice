@@ -12,7 +12,7 @@ public class PrintFunction {
     }
     public static void printHashMapMethod(HashMap<Integer,Integer> map){
         for (Map.Entry<Integer,Integer> entry:map.entrySet()){
-            System.out.print(entry.getKey()+" "+ entry.getKey()+", ");
+            System.out.print(entry.getKey()+" "+ entry.getValue()+", ");
         }
     }
 }
