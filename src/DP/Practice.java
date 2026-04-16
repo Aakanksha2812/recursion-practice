@@ -194,6 +194,7 @@ public class Practice {
         return Math.min(minimumCost(n - 1, cost, dp), minimumCost(n - 2, cost, dp));
     }
 
+
     public static void main(String[] args) {
         Practice p = new Practice();
         int n = 3;
