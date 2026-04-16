@@ -118,7 +118,7 @@ public class Level2 {
             return 0;
         }
         if (target == 0) {
-            return 1;
+            return 0;
         }
         if (dp[target] != -1) {
             return dp[target];
@@ -131,6 +131,24 @@ public class Level2 {
         }
         dp[target] = count;
         return dp[target];
+    }
+
+    int countSubsetWithSum(int idx, int[] nums, int target, int[][] dp) {
+        if (target == 0) {
+            return 1;
+        }
+        if (idx >= nums.length || target < 0) {
+            return 0;
+        }
+
+        if (dp[idx][target] != -1) {
+            return dp[idx][target];
+        }
+
+        int pick = countSubsetWithSum(idx + 1, nums, target - nums[idx], dp);
+        int nonPick = countSubsetWithSum(idx + 1, nums, target, dp);
+        dp[idx][target] = pick + nonPick;
+        return dp[idx][target];
     }
 
     public static void main(String[] args) {
@@ -163,5 +181,12 @@ public class Level2 {
         int[] dp4 = new int[target + 1];
         Arrays.fill(dp4, -1);
         System.out.println("ways to make sum " + l.waysToMakeSum(nums, target, dp4));
+        int[] nums1 = new int[]{1, 2, 3, 3};
+        int target1 = 6;
+        int[][] dp5 = new int[nums1.length][target1 + 1];
+        for (int[] arr : dp5) {
+            Arrays.fill(arr, -1);
+        }
+        System.out.println(l.countSubsetWithSum(0, nums1, target1, dp5));
     }
 }
