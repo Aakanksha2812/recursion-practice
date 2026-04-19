@@ -78,19 +78,36 @@ public class HashMapPractice {
         return maxLen;
     }
 
-    int prefixSum(int[] nums,int k) {
-        HashMap<Integer,Integer> map=new HashMap<>();
-        int sum=0;
-        int count=0;
-        for (int num:nums){
-            sum+=num;
-            if (sum==k){
+    int prefixSum(int[] nums, int k) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int sum = 0;
+        int count = 0;
+        for (int num : nums) {
+            sum += num;
+            if (sum == k) {
                 count++;
             }
-            if (map.containsKey(sum-k)){
-                count+=map.get(sum-k);
+            if (map.containsKey(sum - k)) {
+                count += map.get(sum - k);
             }
-            map.put(sum,map.getOrDefault(sum,0)+1);
+            map.put(sum, map.getOrDefault(sum, 0) + 1);
+        }
+        return count;
+    }
+
+    int countSubArrayWithSum(int[] arr, int k) {
+        int sum = 0;
+        int count = 0;
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int e : arr) {
+            sum += e;
+            if (sum == k) {
+                count++;
+            }
+            if (map.containsKey(sum - k)) {
+                count++;
+            }
+            map.put(sum, map.getOrDefault(sum, 0) + 1);
         }
         return count;
     }
@@ -108,8 +125,10 @@ public class HashMapPractice {
         System.out.println("list are identical " + hm.identicalList(list2, list3));
         int[] nums2 = new int[]{100, 1, 200, 2, 3, 4};
         System.out.println(hm.largestConsecutive(nums2));
-        int[] nums3=new int[]{1,1,1};
-        System.out.println(hm.prefixSum(nums3,2));
+        int[] nums3 = new int[]{1, 1, 1};
+        System.out.println(hm.prefixSum(nums3, 2));
+        int[] arr = new int[]{1, 2, 1};
+        System.out.println("subarray with sum k: " + hm.countSubArrayWithSum(arr, 3));
     }
 
 

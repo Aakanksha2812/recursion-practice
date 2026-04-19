@@ -170,6 +170,44 @@ public class Level2 {
         return dp[i];
     }
 
+    int minSumPath(int[][] grid, int row, int col, int n, int m) {
+        if (col >= m || col < 0 || row >= n || row < 0) {
+            return Integer.MAX_VALUE;
+        }
+        if (row == n - 1) {
+            return grid[row][col];
+        }
+        //   int min=Integer.MAX_VALUE;
+        int down = minSumPath(grid, row + 1, col, n, m);
+        int downLeft = minSumPath(grid, row + 1, col - 1, n, m);
+        int downRight = minSumPath(grid, row + 1, col + 1, n, m);
+        int min = Math.min(down, Math.min(downLeft, downRight));
+        if (min == Integer.MAX_VALUE) {
+            return min;
+        }
+        return grid[row][col] + min;
+    }
+
+    int fromRowminSumPath(int[][] grid) {
+        int ans = Integer.MAX_VALUE;
+        for (int i = 0; i < grid.length; i++) {
+            ans = Math.min(ans, minSumPath(grid, 0, i, grid.length, grid[0].length));
+        }
+        return ans;
+    }
+
+    int waysToDestiny(int i, int j, int n, int m) {
+        if (i >= n || j >= m || i < 0 || j < 0) {
+            return 0;
+        }
+        if (i == n - 1 && j == m - 1) {
+            return 1;
+        }
+        int right = waysToDestiny(i, j + 1, n, m);
+        int down = waysToDestiny(i + 1, j, n, m);
+        return right + down;
+    }
+
     public static void main(String[] args) {
         Level2 l = new Level2();
         ArrayList<Integer> list = new ArrayList<>(Arrays.asList(2, 3, 7, 8, 10));
@@ -207,10 +245,17 @@ public class Level2 {
             Arrays.fill(arr, -1);
         }
         System.out.println(l.countSubsetWithSum(0, nums1, target1, dp5));
-        int[] heights=new int[]{10,30,40,20};
+        int[] heights = new int[]{10, 30, 40, 20};
         int[] dp6 = new int[heights.length];
         Arrays.fill(dp6, -1);
-        System.out.println("frog jum for k steps: "+l.frogJump(heights.length-1,heights,dp6,3));
+        System.out.println("frog jum for k steps: " + l.frogJump(heights.length - 1, heights, dp6, 3));
+        int[][] matrix = new int[][]{
+                {2, 1, 3},
+                {6, 5, 4},
+                {7, 8, 9}
+        };
+        System.out.println("minumim path " + l.fromRowminSumPath(matrix));
 
+        System.out.println("ways to reach destiny: " + l.waysToDestiny(0, 0, 2, 2));
     }
 }
