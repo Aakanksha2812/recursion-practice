@@ -151,6 +151,25 @@ public class Level2 {
         return dp[idx][target];
     }
 
+    int frogJump(int i, int[] heights, int[] dp, int k) {
+        if (i == 0) {
+            return 0;
+        }
+        if (dp[i] != -1) {
+            return dp[i];
+        }
+        int min = Integer.MAX_VALUE;
+        for (int j = 1; j <= k; j++) {
+            if (i - j >= 0) {
+                int cost = frogJump(i - j, heights, dp, k) + Math.abs(heights[i] - heights[i - j]);
+                min = Math.min(min, cost);
+            }
+
+        }
+        dp[i] = min;
+        return dp[i];
+    }
+
     public static void main(String[] args) {
         Level2 l = new Level2();
         ArrayList<Integer> list = new ArrayList<>(Arrays.asList(2, 3, 7, 8, 10));
@@ -188,5 +207,10 @@ public class Level2 {
             Arrays.fill(arr, -1);
         }
         System.out.println(l.countSubsetWithSum(0, nums1, target1, dp5));
+        int[] heights=new int[]{10,30,40,20};
+        int[] dp6 = new int[heights.length];
+        Arrays.fill(dp6, -1);
+        System.out.println("frog jum for k steps: "+l.frogJump(heights.length-1,heights,dp6,3));
+
     }
 }

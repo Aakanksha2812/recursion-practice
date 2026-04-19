@@ -2,7 +2,7 @@ package DP;
 
 import java.util.Arrays;
 
-public class Practice {
+public class Level1 {
     int stairCase(int n, int[] dp) {
         if (n <= 1) {
             return 1;
@@ -196,7 +196,7 @@ public class Practice {
 
 
     public static void main(String[] args) {
-        Practice p = new Practice();
+        Level1 p = new Level1();
         int n = 3;
         int[] dp = new int[n + 1];
         Arrays.fill(dp, -1);
@@ -210,7 +210,7 @@ public class Practice {
         System.out.println("Space Optamazation " + p.robSpace(nums));
         System.out.println(p.nonAdjencentGreaterSum(nums1));
         int[] nums2 = new int[]{10, 20, 30, 10};
-        System.out.println(p.frogJump(nums2));
+        System.out.println("frog jum minimum stps "+p.frogJump(nums2));
         int n1 = 10;
         int[] dp1 = new int[n1 + 1];
         Arrays.fill(dp1, -1);
