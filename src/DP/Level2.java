@@ -219,6 +219,24 @@ public class Level2 {
         return dp[i];
     }
 
+    int climbingStairsCountWays(int n, int[] dp) {
+
+        if (n == 0) {
+            return 1;
+        }
+        if (n < 0) {
+            return 0;
+        }
+        if (dp[n] != -1) {
+            return dp[n];
+        }
+
+        int step1 = climbingStairsCountWays(n - 1, dp);
+        int step2 = climbingStairsCountWays(n - 2, dp);
+        dp[n] = step1 + step2;
+        return dp[n];
+    }
+
     public static void main(String[] args) {
         Level2 l = new Level2();
         ArrayList<Integer> list = new ArrayList<>(Arrays.asList(2, 3, 7, 8, 10));
@@ -272,5 +290,10 @@ public class Level2 {
         int[] dp7 = new int[cost.length];
         Arrays.fill(dp7, -1);
         System.out.println("minimum cost to reach last index: " + Math.min(l.minCost(cost, 0, dp7), l.minCost(cost, 1, dp7)));
+        int[] cost1 = new int[]{1, 100, 1, 1, 1, 100, 1, 1, 100, 1};
+        int[] dp8 = new int[cost1.length];
+        Arrays.fill(dp8, -1);
+        System.out.println("minimum cost to reach last index: " + l.climbingStairsCountWays(3, dp8));
+
     }
 }
