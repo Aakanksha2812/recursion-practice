@@ -208,6 +208,17 @@ public class Level2 {
         return right + down;
     }
 
+    int minCost(int[] cost, int i, int[] dp) {
+        if (i >= cost.length) {
+            return 0;
+        }
+        if (dp[i] != -1) {
+            return dp[i];
+        }
+        dp[i] = Math.min(cost[i] + minCost(cost, i + 1, dp), cost[i] + minCost(cost, i + 2, dp));
+        return dp[i];
+    }
+
     public static void main(String[] args) {
         Level2 l = new Level2();
         ArrayList<Integer> list = new ArrayList<>(Arrays.asList(2, 3, 7, 8, 10));
@@ -257,5 +268,9 @@ public class Level2 {
         System.out.println("minumim path " + l.fromRowminSumPath(matrix));
 
         System.out.println("ways to reach destiny: " + l.waysToDestiny(0, 0, 2, 2));
+        int[] cost = new int[]{10, 15, 20};
+        int[] dp7 = new int[cost.length];
+        Arrays.fill(dp7, -1);
+        System.out.println("minimum cost to reach last index: " + Math.min(l.minCost(cost, 0, dp7), l.minCost(cost, 1, dp7)));
     }
 }
