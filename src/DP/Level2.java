@@ -237,6 +237,28 @@ public class Level2 {
         return dp[n];
     }
 
+    int minStepsWithK(int[] cost, int k, int idx, int[] dp) {
+        if (idx >= cost.length) {
+            return 0;
+        }
+        if (dp[idx] != -1) {
+            return dp[idx];
+        }
+        int min = Integer.MAX_VALUE;
+        boolean found = false;
+        for (int i = 1; i <= k; i++) {
+            if (idx + i < cost.length) {
+                found = true;
+                min = Math.min(min, cost[idx] + minStepsWithK(cost, k, idx + i, dp));
+            }
+        }
+        if (!found) {
+            return cost[idx];
+        }
+        dp[idx] = min;
+        return dp[idx];
+    }
+
     public static void main(String[] args) {
         Level2 l = new Level2();
         ArrayList<Integer> list = new ArrayList<>(Arrays.asList(2, 3, 7, 8, 10));
@@ -294,6 +316,11 @@ public class Level2 {
         int[] dp8 = new int[cost1.length];
         Arrays.fill(dp8, -1);
         System.out.println("minimum cost to reach last index: " + l.climbingStairsCountWays(3, dp8));
+        int[] cost2 = new int[]{3, 2, 4, 5, 1};
+        int[] dp9 = new int[cost2.length];
+        Arrays.fill(dp9, -1);
+        System.out.println("minimum cost to reach last index: " + l.minStepsWithK(cost2, 2, 0, dp9));
+
 
     }
 }

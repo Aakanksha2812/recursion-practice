@@ -105,50 +105,79 @@ public class HashMapPractice {
                 count++;
             }
             if (map.containsKey(sum - k)) {
-                count+=map.get(sum-k);
+                count += map.get(sum - k);
             }
             map.put(sum, map.getOrDefault(sum, 0) + 1);
         }
         return count;
     }
+
     int countSubArrayWithZero(int[] arr) {
         int sum = 0;
         int count = 0;
         HashMap<Integer, Integer> map = new HashMap<>();
-        map.put(0,1);
+        map.put(0, 1);
         for (int e : arr) {
             sum += e;
 
-            if (map.containsKey(sum )) {
-                count+=map.get(sum);
+            if (map.containsKey(sum)) {
+                count += map.get(sum);
             }
             map.put(sum, map.getOrDefault(sum, 0) + 1);
         }
         return count;
     }
-    int longestEqual01(int[] arr){
-        int maxlen=0;
-        HashMap<Integer,Integer> map=new HashMap<>();
-        int sum=0;
-        for (int i=0;i<arr.length;i++){
-            if (arr[i]==1){
-                sum+=1;
+
+    int longestEqual01(int[] arr) {
+        int maxlen = 0;
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int sum = 0;
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] == 1) {
+                sum += 1;
+            } else {
+                sum += -1;
             }
-            else {
-                sum+=-1;
+            if (sum == 0) {
+                maxlen = i + 1;
             }
-            if (sum==0){
-                maxlen=i+1;
-            }
-            if (map.containsKey(sum)){
-                int len=map.get(sum);
-                maxlen=Math.max(len,maxlen);
-            }
-            else {
-                map.put(sum,i);
+            if (map.containsKey(sum)) {
+                int len = map.get(sum);
+                maxlen = Math.max(len, maxlen);
+            } else {
+                map.put(sum, i);
             }
         }
         return maxlen;
+    }
+
+    int nonRepeating(int[] arr) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int e : arr) {
+            map.put(e, map.getOrDefault(e, 0) + 1);
+        }
+        for (int e : arr) {
+            if (map.get(e) == 1) {
+                return e;
+            }
+        }
+        return -1;
+    }
+
+    int majorityElement(int[] arr) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int e : arr) {
+            map.put(e, map.getOrDefault(e, 0) + 1);
+        }
+
+        int n = arr.length / 2;
+        for (Map.Entry<Integer, Integer> e : map.entrySet()) {
+            if (e.getValue() > n ) {
+                return e.getKey();
+            }
+        }
+
+        return -1;
     }
 
     public static void main(String[] args) {
@@ -167,11 +196,16 @@ public class HashMapPractice {
         int[] nums3 = new int[]{1, 1, 1};
         System.out.println(hm.prefixSum(nums3, 2));
         int[] arr = new int[]{1, 2, 1};
-        int[] arr1=new int[]{1,-1,2,-2,3};
+        int[] arr1 = new int[]{1, -1, 2, -2, 3};
         System.out.println("subarray with sum k: " + hm.countSubArrayWithSum(arr, 3));
         System.out.println("subarray with sum k: " + hm.countSubArrayWithZero(arr1));
-        int[] arr2=new int[]{1,0,1,1,0,0};
-        System.out.println("length of 1 and 0 :"+hm.longestEqual01(arr2));
+        int[] arr2 = new int[]{1, 0, 1, 1, 0, 0};
+        System.out.println("length of 1 and 0 :" + hm.longestEqual01(arr2));
+        int[] arr3 = new int[]{4, 5, 1, 2, 0, 4};
+        System.out.println("first non repeating element: " + hm.nonRepeating(arr3));
+        int[] arr4 = new int[]{2, 2, 1, 1, 1, 2, 2};
+        System.out.println("majority of element: " + hm.majorityElement(arr4));
+
 
     }
 
