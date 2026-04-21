@@ -259,6 +259,25 @@ public class Level2 {
         return dp[idx];
     }
 
+    int frogJump(int idx, int[] heights,int[] dp) {
+        if (idx == heights.length-1) {
+            return 0;
+        }
+        if (dp[idx]!=-1){
+            return dp[idx];
+        }
+        int step1 = Integer.MAX_VALUE, step2 = Integer.MAX_VALUE;
+        if (idx + 1 < heights.length) {
+            step1 = Math.abs(heights[idx] - heights[idx + 1]) + frogJump(idx + 1, heights,dp);
+        }
+        if (idx + 2 < heights.length) {
+            step2 = Math.abs(heights[idx] - heights[idx + 2]) + frogJump(idx + 2, heights,dp);
+
+        }
+        dp[idx]= Math.min(step1, step2);
+        return dp[idx];
+    }
+
     public static void main(String[] args) {
         Level2 l = new Level2();
         ArrayList<Integer> list = new ArrayList<>(Arrays.asList(2, 3, 7, 8, 10));
@@ -320,6 +339,10 @@ public class Level2 {
         int[] dp9 = new int[cost2.length];
         Arrays.fill(dp9, -1);
         System.out.println("minimum cost to reach last index: " + l.minStepsWithK(cost2, 2, 0, dp9));
+        int[] heights1 = new int[]{10, 20, 30, 10};
+        int[] dp10 = new int[heights1.length];
+        Arrays.fill(dp10, -1);
+        System.out.println("minimum cost of frog jump: " + l.frogJump(0, heights1,dp10));
 
 
     }

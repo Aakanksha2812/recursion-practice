@@ -40,6 +40,28 @@ public class GridDP {
         return dp[i][j];
     }
 
+    int uniquePathObstacles(int[][] grid, int i, int j, int n, int m, int[][] dp2) {
+        if (i >= n || j >= m) {
+            return 0;
+        }
+        if (dp2[i][j] != -1) {
+            return dp2[i][j];
+        }
+        if (grid[i][j] == 1) {
+            return 0;
+        }
+        if (i == n - 1 && j == m - 1) {
+            return 1;
+        }
+        int right = 0;
+        int down = 0;
+        right = uniquePathObstacles(grid, i, j + 1, n, m, dp2);
+        down = uniquePathObstacles(grid, i + 1, j, n, m, dp2);
+        dp2[i][j] = right + down;
+        return dp2[i][j];
+
+    }
+
     public static void main(String[] args) {
         GridDP g = new GridDP();
         int[][] grid = new int[][]{
@@ -64,5 +86,16 @@ public class GridDP {
         }
         System.out.println(g.uniquePath(grid, 0, 0, 3, 3, dp, visited));
         System.out.println(g.minPathSum(grid1, 0, 0, 3, 3, dp1));
+        int[][] grid2 = new int[][]{
+                {0, 0, 0},
+                {0, 1, 0},
+                {0, 0, 0}
+        };
+        int[][] dp2 = new int[3][3];
+        for (int[] arr : dp2) {
+            Arrays.fill(arr, -1);
+        }
+        System.out.println("unique path with obstacles " + g.uniquePathObstacles(grid2, 0, 0, 3, 3, dp2));
     }
 }
+
