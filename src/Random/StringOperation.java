@@ -1,3 +1,5 @@
+package Random;
+
 public class StringOperation {
     String trimIt(String s){
       return  s.strip();

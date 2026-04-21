@@ -1,4 +1,4 @@
-/*import java.util.HashMap;
+package Random;/*import java.util.HashMap;
 
 public class Dupplicate {
     public boolean containsNearbyDuplicate(int[] nums, int k) {

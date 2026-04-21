@@ -1,3 +1,5 @@
+package Random;
+
 public class BitManipulation {
     int differntNumber(int[] nums){
         int ans=0;

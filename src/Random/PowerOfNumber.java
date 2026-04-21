@@ -1,3 +1,5 @@
+package Random;
+
 public class PowerOfNumber {
     int powerOfnumb(int n){
         return (int) Math.pow(n,1.5);
