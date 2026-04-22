@@ -67,6 +67,24 @@ public class StringDP {
 
     }
 
+    int largestCommonSubstring(String s1, String s2) {
+        int max = 0;
+        int n = s1.length();
+        int m = s2.length();
+        int[][] dp = new int[n + 1][m + 1];
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= m; j++) {
+                if (s1.charAt(i - 1) == s2.charAt(j - 1)) {
+                    dp[i][j] = 1 + dp[i - 1][j - 1];
+                    max = Math.max(max, dp[i][j]);
+                } else {
+                    dp[i][j] = 0;
+                }
+            }
+        }
+        return max;
+    }
+
     public static void main(String[] args) {
         StringDP d = new StringDP();
         String s1 = "abcde";
@@ -79,6 +97,8 @@ public class StringDP {
         System.out.println("Longest Common Subsequence: " + d.largestCommonSubsequencesTab(s1, s2));
         System.out.println("Longest Common Subsequence: " + d.largestCommonSubsequenceString(s1, s2));
 
-
+        String s3 = "abcde";
+        String s4 = "abce";
+        System.out.println("Longest Common Substring: " + d.largestCommonSubstring(s3, s4));
     }
 }
