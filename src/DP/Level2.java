@@ -405,6 +405,6 @@ public class Level2 {
         System.out.println("subset of target is present " + +l.countPartitions(nums2, 1));
 
         int[] arr = new int[]{10, 9, 2, 5, 3, 7, 101, 18};
-        System.out.println("nfbsndfgdfbgdnbng " + l.longestIncreasingSubsequence(0, -1, arr));
+        System.out.println("Longest Increasing Subsequence " + l.longestIncreasingSubsequence(0, -1, arr));
     }
 }
