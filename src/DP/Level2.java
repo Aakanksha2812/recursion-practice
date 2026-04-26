@@ -259,23 +259,63 @@ public class Level2 {
         return dp[idx];
     }
 
-    int frogJump(int idx, int[] heights,int[] dp) {
-        if (idx == heights.length-1) {
+    int frogJump(int idx, int[] heights, int[] dp) {
+        if (idx == heights.length - 1) {
             return 0;
         }
-        if (dp[idx]!=-1){
+        if (dp[idx] != -1) {
             return dp[idx];
         }
         int step1 = Integer.MAX_VALUE, step2 = Integer.MAX_VALUE;
         if (idx + 1 < heights.length) {
-            step1 = Math.abs(heights[idx] - heights[idx + 1]) + frogJump(idx + 1, heights,dp);
+            step1 = Math.abs(heights[idx] - heights[idx + 1]) + frogJump(idx + 1, heights, dp);
         }
         if (idx + 2 < heights.length) {
-            step2 = Math.abs(heights[idx] - heights[idx + 2]) + frogJump(idx + 2, heights,dp);
+            step2 = Math.abs(heights[idx] - heights[idx + 2]) + frogJump(idx + 2, heights, dp);
 
         }
-        dp[idx]= Math.min(step1, step2);
+        dp[idx] = Math.min(step1, step2);
         return dp[idx];
+    }
+
+    int subsetSumR(int i, int[] nums, int target, int[][] dp) {
+        if (target == 0) {
+            return 1;
+        }
+        if (i >= nums.length) {
+
+            return 0;
+        }
+        if (dp[i][target] != -1) {
+            return dp[i][target];
+        }
+        int pick = 0;
+        if (nums[i] <= target) {
+            pick = subsetSumR(i + 1, nums, target - nums[i], dp);
+
+        }
+        int nobpick = subsetSumR(i + 1, nums, target, dp);
+        return dp[i][target] = pick + nobpick;
+    }
+
+    int countPartitions(int[] nums, int diff) {
+
+        int total = 0;
+        for (int num : nums) total += num;
+
+
+        if ((total + diff) % 2 != 0) return 0;
+
+        int target = (total + diff) / 2;
+
+        int n = nums.length;
+        int[][] dp = new int[n][target + 1];
+
+        for (int i = 0; i < n; i++) {
+            Arrays.fill(dp[i], -1);
+        }
+
+        return subsetSumR(0, nums, target, dp);
     }
 
     public static void main(String[] args) {
@@ -342,7 +382,15 @@ public class Level2 {
         int[] heights1 = new int[]{10, 20, 30, 10};
         int[] dp10 = new int[heights1.length];
         Arrays.fill(dp10, -1);
-        System.out.println("minimum cost of frog jump: " + l.frogJump(0, heights1,dp10));
+        System.out.println("minimum cost of frog jump: " + l.frogJump(0, heights1, dp10));
+        int[] nums2 = new int[]{1, 1, 2, 3};
+        int target2 = 1;
+        int[][] dp11 = new int[nums2.length][target2 + 1];
+        for (int[] arr : dp11) {
+            Arrays.fill(arr, -1);
+        }
+        System.out.println("subset of target is present " + l.subsetSumR(0, nums2, target2, dp11));
+        System.out.println("subset of target is present " + +l.countPartitions(nums2, 1));
 
 
     }

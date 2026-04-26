@@ -114,9 +114,6 @@ public class Level1 {
         int[] dp = new int[n];
         Arrays.fill(dp, -1);
         int ans = solve2(n - 1, nums, dp);
-//        for (int i=0;i<dp.length;i++){
-//            System.out.print(dp[i]+" ");
-//        }
         return ans;
     }
 
@@ -210,7 +207,7 @@ public class Level1 {
         System.out.println("Space Optamazation " + p.robSpace(nums));
         System.out.println(p.nonAdjencentGreaterSum(nums1));
         int[] nums2 = new int[]{10, 20, 30, 10};
-        System.out.println("frog jum minimum stps "+p.frogJump(nums2));
+        System.out.println("frog jum minimum stps " + p.frogJump(nums2));
         int n1 = 10;
         int[] dp1 = new int[n1 + 1];
         Arrays.fill(dp1, -1);
