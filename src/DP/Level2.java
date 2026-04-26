@@ -2,7 +2,6 @@ package DP;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Map;
 
 public class Level2 {
     boolean subsetSum(int i, int target, ArrayList<Integer> list, int[][] dp) {
@@ -319,14 +318,14 @@ public class Level2 {
         return subsetSumR(0, nums, target, dp);
     }
 
-    int lis(int i, int prevIndex, int[] arr) {
+    int longestIncreasingSubsequence(int i, int prevIndex, int[] arr) {
         if (i >= arr.length) {
             return 0;
         }
-        int nottake = lis(i + 1, prevIndex, arr);
+        int nottake = longestIncreasingSubsequence(i + 1, prevIndex, arr);
         int take = 0;
         if (prevIndex == -1 || arr[i] > arr[prevIndex]) {
-            take = 1 + lis(i + 1, i, arr);
+            take = 1 + longestIncreasingSubsequence(i + 1, i, arr);
         }
         return Math.max(nottake, take);
     }
@@ -406,6 +405,6 @@ public class Level2 {
         System.out.println("subset of target is present " + +l.countPartitions(nums2, 1));
 
         int[] arr = new int[]{10, 9, 2, 5, 3, 7, 101, 18};
-        System.out.println("nfbsndfgdfbgdnbng " + l.lis(0, -1, arr));
+        System.out.println("nfbsndfgdfbgdnbng " + l.longestIncreasingSubsequence(0, -1, arr));
     }
 }
