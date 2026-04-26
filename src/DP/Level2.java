@@ -318,16 +318,20 @@ public class Level2 {
         return subsetSumR(0, nums, target, dp);
     }
 
-    int longestIncreasingSubsequence(int i, int prevIndex, int[] arr) {
+    int longestIncreasingSubsequence(int i, int prevIndex, int[] arr, int[][] dp) {
         if (i >= arr.length) {
             return 0;
         }
-        int nottake = longestIncreasingSubsequence(i + 1, prevIndex, arr);
+        if (dp[i][prevIndex + 1] != -1) {
+            return dp[i][prevIndex + 1];
+        }
+        int nottake = longestIncreasingSubsequence(i + 1, prevIndex, arr, dp);
         int take = 0;
         if (prevIndex == -1 || arr[i] > arr[prevIndex]) {
-            take = 1 + longestIncreasingSubsequence(i + 1, i, arr);
+            take = 1 + longestIncreasingSubsequence(i + 1, i, arr, dp);
         }
-        return Math.max(nottake, take);
+
+        return dp[i][prevIndex + 1] = Math.max(nottake, take);
     }
 
     public static void main(String[] args) {
@@ -404,7 +408,11 @@ public class Level2 {
         System.out.println("subset of target is present " + l.subsetSumR(0, nums2, target2, dp11));
         System.out.println("subset of target is present " + +l.countPartitions(nums2, 1));
 
-        int[] arr = new int[]{10, 9, 2, 5, 3, 7, 101, 18};
-        System.out.println("Longest Increasing Subsequence " + l.longestIncreasingSubsequence(0, -1, arr));
+        int[] nums3 = new int[]{10, 9, 2, 5, 3, 7, 101, 18};
+        int[][] dp12 = new int[nums3.length][nums3.length + 1];
+        for (int[] arr : dp12) {
+            Arrays.fill(arr, -1);
+        }
+        System.out.println("Longest Increasing Subsequence " + l.longestIncreasingSubsequence(0, -1, nums3, dp12));
     }
 }
