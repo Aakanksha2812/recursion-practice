@@ -279,13 +279,14 @@ public class Level2 {
     }
 
     int subsetSumR(int i, int[] nums, int target, int[][] dp) {
-        if (target == 0) {
-            return 1;
-        }
-        if (i >= nums.length) {
 
+        if (i >= nums.length) {
+            if (target == 0) {
+                return 1;
+            }
             return 0;
         }
+
         if (dp[i][target] != -1) {
             return dp[i][target];
         }
@@ -316,6 +317,18 @@ public class Level2 {
         }
 
         return subsetSumR(0, nums, target, dp);
+    }
+
+    int lis(int i, int prevIndex, int[] arr) {
+        if (i >= arr.length) {
+            return 0;
+        }
+        int nottake = lis(i + 1, prevIndex, arr);
+        int take = 0;
+        if (prevIndex == -1 || arr[i] > arr[prevIndex]) {
+            take = 1 + lis(i + 1, i, arr);
+        }
+        return Math.max(nottake, take);
     }
 
     public static void main(String[] args) {
@@ -383,8 +396,8 @@ public class Level2 {
         int[] dp10 = new int[heights1.length];
         Arrays.fill(dp10, -1);
         System.out.println("minimum cost of frog jump: " + l.frogJump(0, heights1, dp10));
-        int[] nums2 = new int[]{1, 1, 2, 3};
-        int target2 = 1;
+        int[] nums2 = new int[]{0, 0, 0};
+        int target2 = 0;
         int[][] dp11 = new int[nums2.length][target2 + 1];
         for (int[] arr : dp11) {
             Arrays.fill(arr, -1);
@@ -392,6 +405,7 @@ public class Level2 {
         System.out.println("subset of target is present " + l.subsetSumR(0, nums2, target2, dp11));
         System.out.println("subset of target is present " + +l.countPartitions(nums2, 1));
 
-
+        int[] arr = new int[]{10, 9, 2, 5, 3, 7, 101, 18};
+        System.out.println("nfbsndfgdfbgdnbng " + l.lis(0, -1, arr));
     }
 }
