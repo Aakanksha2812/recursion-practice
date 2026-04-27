@@ -1,0 +1,32 @@
+package DP;
+
+import java.util.Arrays;
+
+public class Level3 {
+    int stockDP(int i, int canBuy, int[] stock, int[][] dp) {
+        if (i >= stock.length) {
+            return 0;
+        }
+        if (dp[i][canBuy] != -1) {
+            return dp[i][canBuy];
+        }
+        if (canBuy == 1) {
+            dp[i][canBuy] = Math.max(-stock[i] + stockDP(i + 1, 0, stock, dp), stockDP(i + 1, 1, stock, dp));
+
+        } else {
+            dp[i][canBuy] = Math.max(stock[i] + stockDP(i + 1, 1, stock, dp), stockDP(i + 1, 0, stock, dp));
+
+        }
+        return dp[i][canBuy];
+    }
+
+    public static void main(String[] args) {
+        Level3 l = new Level3();
+        int[] stock = new int[]{7, 1, 5, 3, 6, 4};
+        int[][] dp = new int[stock.length][2];
+        for (int[] arr : dp) {
+            Arrays.fill(arr, -1);
+        }
+        System.out.println("total profit in transaction: " + l.stockDP(0, 1, stock, dp));
+    }
+}

@@ -1,6 +1,8 @@
 package SlidingWindow;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 public class Level1 {
     int maxSubarrayWithKLen(int[] arr, int k) {
@@ -56,6 +58,13 @@ public class Level1 {
         }
         return max;
     }
+
+   /* List<Integer> firstNegativeOfWindowK(int[] arr, int k) {
+        ArrayList<Integer> list = new ArrayList<>();
+        for (int i = 0; i < k; i++) {
+            list.add(arr[i]);
+        }
+    }*/
 
     public static void main(String[] args) {
         Level1 l = new Level1();
