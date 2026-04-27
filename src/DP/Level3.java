@@ -20,6 +20,18 @@ public class Level3 {
         return dp[i][canBuy];
     }
 
+    int stockCoolDown(int i, int canBuy, int[] price, int[][] dp) {
+        if (i >= price.length) {
+            return 0;
+        }
+        if (canBuy == 1) {
+            dp[i][canBuy] = Math.max(-price[i] + stockCoolDown(i + 1, 0, price, dp), stockCoolDown(i + 1, 1, price, dp));
+        } else {
+            dp[i][canBuy] = Math.max(price[i] + stockCoolDown(i + 2, 1, price, dp), stockCoolDown(i + 1, 0, price, dp));
+        }
+        return dp[i][canBuy];
+    }
+
     public static void main(String[] args) {
         Level3 l = new Level3();
         int[] stock = new int[]{7, 1, 5, 3, 6, 4};
@@ -28,5 +40,11 @@ public class Level3 {
             Arrays.fill(arr, -1);
         }
         System.out.println("total profit in transaction: " + l.stockDP(0, 1, stock, dp));
+        int[] price = new int[]{1, 2, 3, 0, 2};
+        int[][] dp1 = new int[price.length][2];
+        for (int[] arr : dp1) {
+            Arrays.fill(arr, -1);
+        }
+        System.out.println("total profit using cooldown: " + l.stockCoolDown(0, 1, price, dp));
     }
 }
