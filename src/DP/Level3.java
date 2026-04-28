@@ -35,11 +35,14 @@ public class Level3 {
         if (k==0 || i>=price.length){
             return 0;
         }
+        if (dp[i][canBuy]!=-1){
+            return dp[i][canBuy];
+        }
         if (canBuy==1){
             dp[i][canBuy]=Math.max(-price[i]+stockTransactionK(i+1,0,k,price,dp),stockTransactionK(i+1,1,k,price,dp));
         }
         else{
-            dp[i][canBuy]=Math.max(price[i]+stockTransactionK(i+1,1,k-1,price,dp),stockTransactionK(i+1,1,k,price,dp));
+            dp[i][canBuy]=Math.max(price[i]+stockTransactionK(i+1,1,k-1,price,dp),stockTransactionK(i+1,0,k,price,dp));
         }
         return dp[i][canBuy];
     }
