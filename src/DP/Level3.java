@@ -31,20 +31,20 @@ public class Level3 {
         }
         return dp[i][canBuy];
     }
-    int stockTransactionK(int i,int canBuy,int k,int[] price,int[][] dp){
-        if (k==0 || i>=price.length){
+
+    int stockTransactionK(int i, int canBuy, int k, int[] price, int[][][] dp) {
+        if (k == 0 || i >= price.length) {
             return 0;
         }
-        if (dp[i][canBuy]!=-1){
-            return dp[i][canBuy];
+        if (dp[i][canBuy][k] != -1) {
+            return dp[i][canBuy][k];
         }
-        if (canBuy==1){
-            dp[i][canBuy]=Math.max(-price[i]+stockTransactionK(i+1,0,k,price,dp),stockTransactionK(i+1,1,k,price,dp));
+        if (canBuy == 1) {
+            dp[i][canBuy][k] = Math.max(-price[i] + stockTransactionK(i + 1, 0, k, price, dp), stockTransactionK(i + 1, 1, k, price, dp));
+        } else {
+            dp[i][canBuy][k] = Math.max(price[i] + stockTransactionK(i + 1, 1, k - 1, price, dp), stockTransactionK(i + 1, 0, k, price, dp));
         }
-        else{
-            dp[i][canBuy]=Math.max(price[i]+stockTransactionK(i+1,1,k-1,price,dp),stockTransactionK(i+1,0,k,price,dp));
-        }
-        return dp[i][canBuy];
+        return dp[i][canBuy][k];
     }
 
     public static void main(String[] args) {
@@ -61,11 +61,14 @@ public class Level3 {
             Arrays.fill(arr, -1);
         }
         System.out.println("total profit using cooldown: " + l.stockCoolDown(0, 1, price, dp));
-        int[] price1 = new int[]{3,2,6,5,0,3};
-        int[][] dp2 = new int[price1.length][2];
-        for (int[] arr : dp2) {
-            Arrays.fill(arr, -1);
+        int[] price1 = new int[]{3, 2, 6, 5, 0, 3};
+        int k = 2;
+        int[][][] dp2 = new int[price1.length][2][k+1];
+        for (int[][] arr : dp2) {
+            for (int[] a : arr) {
+                Arrays.fill(a, -1);
+            }
         }
-        System.out.println("total profit with K transaction: " + l.stockTransactionK(0,1,2,price1,dp2));
+        System.out.println("total profit with K transaction: " + l.stockTransactionK(0, 1, 2, price1, dp2));
     }
 }
