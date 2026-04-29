@@ -47,6 +47,47 @@ public class Level3 {
         return dp[i][canBuy][k];
     }
 
+    int minJump(int i, int[] arr, int[] dp) {
+        if (i >= arr.length - 1) {
+            return 0;
+        }
+        if (arr[i] == 0) {
+            return Integer.MAX_VALUE;
+        }
+        if (dp[i] != -1) {
+            return dp[i];
+        }
+        int min = Integer.MAX_VALUE;
+        for (int j = 1; j <= arr[i]; j++) {
+            int next = minJump(i + j, arr, dp);
+            if (next != -1) {
+                min = Math.min(min, next + 1);
+            }
+        }
+        return dp[i] = min;
+    }
+
+    boolean canReach(int i, int[] arr, int[] dp4) {
+
+        if (i == arr.length - 1) {
+            return true;
+        }
+        if (i >= arr.length || arr[i] == 0) {
+            return false;
+        }
+        if (dp4[i]!=-1){
+            return dp4[i]==1;
+        }
+        for (int j = 1; j <= arr[i]; j++) {
+            if(canReach(i + j, arr, dp4)){
+                dp4[i]=1;
+                return true;
+            }
+        }
+        dp4[i] = 0;
+        return false;
+    }
+
     public static void main(String[] args) {
         Level3 l = new Level3();
         int[] stock = new int[]{7, 1, 5, 3, 6, 4};
@@ -63,12 +104,22 @@ public class Level3 {
         System.out.println("total profit using cooldown: " + l.stockCoolDown(0, 1, price, dp));
         int[] price1 = new int[]{3, 2, 6, 5, 0, 3};
         int k = 2;
-        int[][][] dp2 = new int[price1.length][2][k+1];
+        int[][][] dp2 = new int[price1.length][2][k + 1];
         for (int[][] arr : dp2) {
             for (int[] a : arr) {
                 Arrays.fill(a, -1);
             }
         }
         System.out.println("total profit with K transaction: " + l.stockTransactionK(0, 1, 2, price1, dp2));
+        int[] arr = {2, 3, 1, 1, 4};
+        int[] dp3 = new int[arr.length];
+        Arrays.fill(dp3, -1);
+
+        int ans = l.minJump(0, arr, dp3);
+        int[] dp4 = new int[arr.length];
+        Arrays.fill(dp4, -1);
+
+        System.out.println("minimum jumps to reach last index: " + ans);
+        System.out.println("possible to reach last index: " + l.canReach(0, arr, dp4));
     }
 }
