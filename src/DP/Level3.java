@@ -140,15 +140,19 @@ public class Level3 {
         return dp[n][W];
     }
 
-    boolean canPartition(int i, int sum, int[] nums) {
+    boolean canPartition(int i, int sum, int[] nums, int[][] dp) {
         if (sum == 0) {
             return true;
         }
         if (sum < 0 || i >= nums.length) {
             return false;
         }
-        boolean pick = canPartition(i + 1, sum - nums[i], nums);
-        boolean nonpick = canPartition(i + 1, sum, nums);
+        if (dp[i][sum] != -1) {
+            return dp[i][sum] == 1;
+        }
+        boolean pick = canPartition(i + 1, sum - nums[i], nums, dp);
+        boolean nonpick = canPartition(i + 1, sum, nums, dp);
+        dp[i][sum] = pick || nonpick ? 1 : 0;
         return pick || nonpick;
 
     }
@@ -202,13 +206,19 @@ public class Level3 {
         System.out.println("max weight tab version: " + l.knapsackTab(wt, val, W));
         int[] nums = new int[]{1, 5, 11, 5};
         int sum = 0;
+
+
         for (int e : nums) {
             sum += e;
+        }
+        int[][] dp7 = new int[nums.length][sum + 1];
+        for (int[] arr3 : dp7) {
+            Arrays.fill(arr3, -1);
         }
         if (sum % 2 != 0) {
             System.out.println("equal partition is not possible");
         } else {
-            System.out.println("equal pattition is possible " + l.canPartition(0, sum / 2, nums));
+            System.out.println("equal pattition is possible " + l.canPartition(0, sum / 2, nums, dp7));
         }
     }
 }
