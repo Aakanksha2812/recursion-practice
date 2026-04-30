@@ -75,17 +75,69 @@ public class Level3 {
         if (i >= arr.length || arr[i] == 0) {
             return false;
         }
-        if (dp4[i]!=-1){
-            return dp4[i]==1;
+        if (dp4[i] != -1) {
+            return dp4[i] == 1;
         }
         for (int j = 1; j <= arr[i]; j++) {
-            if(canReach(i + j, arr, dp4)){
-                dp4[i]=1;
+            if (canReach(i + j, arr, dp4)) {
+                dp4[i] = 1;
                 return true;
             }
         }
         dp4[i] = 0;
         return false;
+    }
+
+    int rob(int i, int[] home, int[] dp) {
+        if (i >= home.length) {
+            return 0;
+        }
+        if (dp[i] != -1) {
+            return dp[i];
+        }
+        int pick = home[i] + rob(i + 2, home, dp);
+        int nonpick = rob(i + 1, home, dp);
+        return dp[i] = Math.max(pick, nonpick);
+    }
+
+    int knapsack(int i, int w, int[] wt, int[] val, int[][] dp) {
+        if (w == 0 || i >= wt.length) {
+            return 0;
+        }
+        if (dp[i][w] != -1) {
+            return dp[i][w];
+        }
+        int nonpick = knapsack(i + 1, w, wt, val, dp);
+        int pick = 0;
+        if (wt[i] <= w) {
+            pick = val[i] + knapsack(i + 1, w - wt[i], wt, val, dp);
+        }
+        dp[i][w] = Math.max(nonpick, pick);
+        return dp[i][w];
+    }
+
+    int knapsackTab(int[] wt, int[] val, int W) {
+
+        int n = wt.length;
+        int[][] dp = new int[n + 1][W + 1];
+
+        // dp[0][w] = 0 (no items → value 0)
+
+        for (int i = 1; i <= n; i++) {
+            for (int w = 0; w <= W; w++) {
+
+                int nonPick = dp[i - 1][w];
+
+                int pick = 0;
+                if (wt[i - 1] <= w) {
+                    pick = val[i - 1] + dp[i - 1][w - wt[i - 1]];
+                }
+
+                dp[i][w] = Math.max(pick, nonPick);
+            }
+        }
+
+        return dp[n][W];
     }
 
     public static void main(String[] args) {
@@ -121,5 +173,19 @@ public class Level3 {
 
         System.out.println("minimum jumps to reach last index: " + ans);
         System.out.println("possible to reach last index: " + l.canReach(0, arr, dp4));
+        int[] rob = new int[]{2, 7, 9, 3, 1};
+        int[] dp5 = new int[rob.length];
+        Arrays.fill(dp5, -1);
+
+        System.out.println("profit in " + l.rob(0, rob, dp5));
+        int[] wt = new int[]{1, 2, 4, 5};
+        int[] val = new int[]{5, 4, 8, 6};
+        int W = 5;
+        int[][] dp6 = new int[wt.length][W + 1];
+        for (int[] arr1 : dp6) {
+            Arrays.fill(arr1, -1);
+        }
+        System.out.println("maximum weight: " + l.knapsack(0, W, wt, val, dp6));
+        System.out.println("max weight tab version: "+l.knapsackTab(wt,val,W));
     }
 }
