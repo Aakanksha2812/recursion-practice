@@ -157,6 +157,27 @@ public class Level3 {
 
     }
 
+    int coinChange(int i, int amount, int[] coins) {
+
+        if (amount == 0) {
+            return 0;
+        }
+        if (i >= coins.length || amount < 0) {
+            return Integer.MAX_VALUE;
+        }
+        int nonPick = coinChange(i + 1, amount, coins);
+        int pick = Integer.MAX_VALUE;
+
+        if (coins[i] <= amount) {
+            int next = coinChange(i, amount - coins[i], coins);
+            if (next != Integer.MAX_VALUE) {
+                pick = 1 + next;
+            }
+        }
+
+        return Math.min(pick, nonPick);
+    }
+
     public static void main(String[] args) {
         Level3 l = new Level3();
         int[] stock = new int[]{7, 1, 5, 3, 6, 4};
@@ -220,5 +241,8 @@ public class Level3 {
         } else {
             System.out.println("equal pattition is possible " + l.canPartition(0, sum / 2, nums, dp7));
         }
+        int[] coins = new int[]{1, 2, 5};
+        int amount = 11;
+        System.out.println("minimum coin to take amount " + l.coinChange(0, amount, coins));
     }
 }
