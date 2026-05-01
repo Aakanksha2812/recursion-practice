@@ -157,7 +157,7 @@ public class Level3 {
 
     }
 
-    int coinChange(int i, int amount, int[] coins) {
+    int coinChange(int i, int amount, int[] coins, int[][] dp) {
 
         if (amount == 0) {
             return 0;
@@ -165,17 +165,50 @@ public class Level3 {
         if (i >= coins.length || amount < 0) {
             return Integer.MAX_VALUE;
         }
-        int nonPick = coinChange(i + 1, amount, coins);
+        if (dp[i][amount] != -1) {
+            return dp[i][amount];
+        }
+        int nonPick = coinChange(i + 1, amount, coins, dp);
         int pick = Integer.MAX_VALUE;
 
         if (coins[i] <= amount) {
-            int next = coinChange(i, amount - coins[i], coins);
+            int next = coinChange(i, amount - coins[i], coins, dp);
             if (next != Integer.MAX_VALUE) {
                 pick = 1 + next;
             }
         }
 
-        return Math.min(pick, nonPick);
+        return dp[i][amount] = Math.min(pick, nonPick);
+    }
+
+    int coinChangeWays(int i, int amount, int[] coins, int[][] dp) {
+        if (amount == 0) {
+            return 1;
+        }
+        if (amount < 0 || i >= coins.length) {
+            return 0;
+        }
+        if (dp[i][amount] != -1) {
+            return dp[i][amount];
+        }
+        int nonPick = coinChangeWays(i + 1, amount, coins, dp);
+        int pick = 0;
+        if (coins[i] <= amount) {
+            pick = coinChangeWays(i, amount - coins[i], coins, dp);
+        }
+        return dp[i][amount] = nonPick + pick;
+    }
+
+    int minJumpR(int i, int[] jump,int[] dp) {
+       if (i==0 || i==1){
+           return jump[i];
+       }
+       if (dp[i]!=-1){
+           return dp[i];
+       }
+        int step1=jump[i]+minJumpR(i-2,jump,dp);
+        int step2=jump[i]+minJumpR(i-1,jump,dp);
+        return dp[i]=Math.min(step2,step1);
     }
 
     public static void main(String[] args) {
@@ -243,6 +276,22 @@ public class Level3 {
         }
         int[] coins = new int[]{1, 2, 5};
         int amount = 11;
-        System.out.println("minimum coin to take amount " + l.coinChange(0, amount, coins));
+        int[][] dp8 = new int[coins.length][amount + 1];
+        for (int[] arr3 : dp8) {
+            Arrays.fill(arr3, -1);
+        }
+        System.out.println("minimum coin to take amount " + l.coinChange(0, amount, coins, dp8));
+        int[] coins1 = new int[]{1, 2, 5};
+        int amount1 = 5;
+        int[][] dp9 = new int[coins1.length][amount1 + 1];
+        for (int[] arr3 : dp9) {
+            Arrays.fill(arr3, -1);
+        }
+        System.out.println("ways for coins " + l.coinChangeWays(0, amount1, coins1, dp9));
+        int[] cost =new int[] {10, 15, 20};
+        int[] dp10 = new int[cost.length];
+        Arrays.fill(dp10, -1);
+
+        System.out.println("jggfgxghb "+Math.min(l.minJumpR(cost.length-1,cost,dp10),l.minJumpR(cost.length-2,cost,dp10)));
     }
 }
