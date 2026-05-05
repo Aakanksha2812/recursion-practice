@@ -199,17 +199,37 @@ public class Level3 {
         return dp[i][amount] = nonPick + pick;
     }
 
-    int minJumpR(int i, int[] jump,int[] dp) {
-       if (i==0 || i==1){
-           return jump[i];
-       }
-       if (dp[i]!=-1){
-           return dp[i];
-       }
-        int step1=jump[i]+minJumpR(i-2,jump,dp);
-        int step2=jump[i]+minJumpR(i-1,jump,dp);
-        return dp[i]=Math.min(step2,step1);
+    int minJumpR(int i, int[] jump, int[] dp) {
+        if (i == 0 || i == 1) {
+            return jump[i];
+        }
+        if (dp[i] != -1) {
+            return dp[i];
+        }
+        int step1 = jump[i] + minJumpR(i - 2, jump, dp);
+        int step2 = jump[i] + minJumpR(i - 1, jump, dp);
+        return dp[i] = Math.min(step2, step1);
     }
+
+    int jump(int i, int[] nums) {
+        if (i == nums.length-1) {
+            return 0;
+        }
+        if(i>=nums.length || nums[i]==0){
+            return Integer.MAX_VALUE;
+        }
+        int min = Integer.MAX_VALUE;
+        int next=0;
+        for (int j = 1; j <= nums[i]; j++) {
+            next = jump(i + j, nums);
+            if (next != Integer.MAX_VALUE) {
+                next=1+next;
+                min = Math.min(min, next);
+            }
+        }
+        return min;
+    }
+
 
     public static void main(String[] args) {
         Level3 l = new Level3();
@@ -288,10 +308,12 @@ public class Level3 {
             Arrays.fill(arr3, -1);
         }
         System.out.println("ways for coins " + l.coinChangeWays(0, amount1, coins1, dp9));
-        int[] cost =new int[] {10, 15, 20};
+        int[] cost = new int[]{10, 15, 20};
         int[] dp10 = new int[cost.length];
         Arrays.fill(dp10, -1);
 
-        System.out.println("jggfgxghb "+Math.min(l.minJumpR(cost.length-1,cost,dp10),l.minJumpR(cost.length-2,cost,dp10)));
+        System.out.println("jggfgxghb " + Math.min(l.minJumpR(cost.length - 1, cost, dp10), l.minJumpR(cost.length - 2, cost, dp10)));
+        int[] nums1 = new int[]{2, 3, 1, 1, 4};
+        System.out.println("minimum steps to reach last index " + l.jump(0, nums1));
     }
 }
