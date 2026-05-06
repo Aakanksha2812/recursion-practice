@@ -36,7 +36,7 @@ public class Level4 {
     }
 
     boolean palindrome(int s, int e, String str) {
-        if (s >=e) {
+        if (s >= e) {
             return true;
         }
         if (str.charAt(s) != str.charAt(e)) {
@@ -51,18 +51,18 @@ public class Level4 {
         }
         for (int j = i; j < str.length(); j++) {
 
-                String ans = str.substring(i, j + 1);
-                if (palindrome(i, j, str)) {
-                    if (camp.length() < ans.length()) {
-                        camp = ans;
-                    }
+            String ans = str.substring(i, j + 1);
+            if (palindrome(i, j, str)) {
+                if (camp.length() < ans.length()) {
+                    camp = ans;
                 }
-
+            }
 
 
         }
         return palindromicString(i + 1, str, camp);
     }
+
     int solve(int i, int j, int n, int m, int[][] obstacleGrid, int[][] dp) {
         if (i >= n || j >= m) {
             return 0;
@@ -87,6 +87,20 @@ public class Level4 {
         int[][] dp = new int[n][m];
         return solve(0, 0, n, m, obstacleGrid, dp);
     }
+
+    int minimumFallingPath(int i, int j, int n, int m, int[][] grid) {
+        if (j >= m || j < 0) {
+            return Integer.MAX_VALUE/2;
+        }
+        if (i==n-1){
+            return grid[i][j];
+        }
+        int down = grid[i][j] + minimumFallingPath(i + 1, j, n, m, grid);
+        int leftDown = grid[i][j] + minimumFallingPath(i + 1, j - 1, n, m, grid);
+        int rightDown = grid[i][j] + minimumFallingPath(i + 1, j + 1, n, m, grid);
+        return Math.min(down, Math.min(leftDown, rightDown));
+    }
+
     public static void main(String[] args) {
         Level4 l = new Level4();
         System.out.println("Alice is winner " + l.divisorGame(8));
@@ -98,6 +112,18 @@ public class Level4 {
         String string = "babad";
         StringBuilder s = new StringBuilder();
         System.out.println("String is palindrome: " + l.palindromicString(0, string, ""));
-
+        int[][] matrix = new int[][]{
+                {2, 1, 3},
+                {6, 5, 4},
+                {7, 8, 9}
+        };
+       // System.out.println("minimum falling path: "+l.minimumFallingPath(0));
+        int min=Integer.MAX_VALUE;
+        int n1=matrix.length;
+        int m= matrix[0].length;
+        for (int i = 0; i <m; i++) {
+            min=Math.min(min,l.minimumFallingPath(0,i,n1,m,matrix));
+        }
+         System.out.println("minimum falling path: "+min);
     }
-}
+    }
