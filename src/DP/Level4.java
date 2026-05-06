@@ -63,7 +63,30 @@ public class Level4 {
         }
         return palindromicString(i + 1, str, camp);
     }
+    int solve(int i, int j, int n, int m, int[][] obstacleGrid, int[][] dp) {
+        if (i >= n || j >= m) {
+            return 0;
+        }
+        if (obstacleGrid[i][j] == 1) {
+            return 0;
+        }
+        if (i == n - 1 && j == m - 1) {
+            return 1;
+        }
+        if (dp[i][j] != -1) {
+            return dp[i][j];
+        }
+        int right = solve(i + 1, j, n, m, obstacleGrid, dp);
+        int down = solve(i, j + 1, n, m, obstacleGrid, dp);
+        return dp[i][j] = right + down;
+    }
 
+    public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+        int n = obstacleGrid.length;
+        int m = obstacleGrid[0].length;
+        int[][] dp = new int[n][m];
+        return solve(0, 0, n, m, obstacleGrid, dp);
+    }
     public static void main(String[] args) {
         Level4 l = new Level4();
         System.out.println("Alice is winner " + l.divisorGame(8));
@@ -75,5 +98,6 @@ public class Level4 {
         String string = "babad";
         StringBuilder s = new StringBuilder();
         System.out.println("String is palindrome: " + l.palindromicString(0, string, ""));
+
     }
 }
