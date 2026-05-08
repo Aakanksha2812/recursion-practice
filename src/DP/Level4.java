@@ -2,6 +2,8 @@ package DP;
 
 import java.util.Arrays;
 
+import static Print.PrintFunction.printArrayMethod;
+
 public class Level4 {
     public boolean divisorGame(int n) {
         boolean[] dp = new boolean[n + 1];
@@ -90,9 +92,9 @@ public class Level4 {
 
     int minimumFallingPath(int i, int j, int n, int m, int[][] grid) {
         if (j >= m || j < 0) {
-            return Integer.MAX_VALUE/2;
+            return Integer.MAX_VALUE / 2;
         }
-        if (i==n-1){
+        if (i == n - 1) {
             return grid[i][j];
         }
         int down = grid[i][j] + minimumFallingPath(i + 1, j, n, m, grid);
@@ -101,6 +103,94 @@ public class Level4 {
         return Math.min(down, Math.min(leftDown, rightDown));
     }
 
+    int maxConsecutiveNumber(int i, int[] nums, int max, int current) {
+        if (i >= nums.length) {
+            return max;
+        }
+
+        if (nums[i] == 1) {
+            current++;
+            max = Math.max(current, max);
+        } else {
+
+            current = 0;
+        }
+        return maxConsecutiveNumber(i + 1, nums, max, current);
+    }
+
+    int maxConsecutiveNumberRow(int[][] grid) {
+        int max = 0;
+        int index = -1;
+        int ix = 0;
+        for (int[] arr : grid) {
+
+            index++;
+            int ans = maxConsecutiveNumber(0, arr, 0, 0);
+            if (ans >= max) {
+                max = ans;
+                ix = index;
+            }
+        }
+        return ix;
+    }
+
+    int maxConsecutiveNumberColumn(int i, int j, int[][] grid, int max, int current) {
+        if (i >= grid.length) {
+            return max;
+        }
+        if (grid[i][j] == 1) {
+            current++;
+            max = Math.max(max, current);
+        } else {
+            current = 0;
+        }
+        return maxConsecutiveNumberColumn(i + 1, j, grid, max, current);
+    }
+
+    int consecutive1s(int[][] grid) {
+        int n = grid.length;
+        int m = grid[0].length;
+        int[][] dp = new int[n][m];
+
+        int max = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (grid[i][j] == 1) {
+                    if (i == 0 || j == 0) {
+                        dp[i][j] = 1;
+                    } else {
+                        dp[i][j] = 1 + Math.min(Math.min(dp[i][j - 1], dp[i - 1][j]), dp[i - 1][j - 1]);
+                    }}
+                    max = Math.max(max, dp[i][j]);
+
+
+            }
+        }
+
+        return max*max;
+    }
+    int solve(int i,int[] nums,int max,int current,int[] dp){
+        if(i>=nums.length){
+            return max;
+        }
+        if(dp[i]!=-1){
+            return dp[i];
+        }
+        current*=nums[i];
+        if(max<current){
+            max=current;
+            max=  Math.max(max,current);
+        }
+        else{
+            current=1;
+        }
+        return  dp[i]=solve(i+1,nums,max,current,dp);
+    }
+    public int maxProduct(int[] nums) {
+        int[] dp=new int[nums.length];
+        Arrays.fill(dp,-1);
+        return solve(0,nums,Integer.MIN_VALUE,1,dp);
+    }
     public static void main(String[] args) {
         Level4 l = new Level4();
         System.out.println("Alice is winner " + l.divisorGame(8));
@@ -117,13 +207,40 @@ public class Level4 {
                 {6, 5, 4},
                 {7, 8, 9}
         };
-       // System.out.println("minimum falling path: "+l.minimumFallingPath(0));
-        int min=Integer.MAX_VALUE;
-        int n1=matrix.length;
-        int m= matrix[0].length;
-        for (int i = 0; i <m; i++) {
-            min=Math.min(min,l.minimumFallingPath(0,i,n1,m,matrix));
+        // System.out.println("minimum falling path: "+l.minimumFallingPath(0));
+        int min = Integer.MAX_VALUE;
+        int n1 = matrix.length;
+        int m = matrix[0].length;
+        for (int i = 0; i < m; i++) {
+            min = Math.min(min, l.minimumFallingPath(0, i, n1, m, matrix));
         }
-         System.out.println("minimum falling path: "+min);
+        System.out.println("minimum falling path: " + min);
+        int[] nums = new int[]{1, 1, 0, 1, 1, 1};
+        int[] dp1 = new int[nums.length];
+        Arrays.fill(dp1, -1);
+        int[][] grid = new int[][]{{1, 1, 0},
+                {1, 1, 1},
+                {0, 1, 1}};
+        System.out.println("maximum consecutive number: " + l.maxConsecutiveNumber(0, nums, Integer.MIN_VALUE, 0));
+        System.out.println("maximum consecutive in row:  " + l.maxConsecutiveNumberRow(grid));
+        int[][] grid1 = new int[][]{
+                {1},
+                {1},
+                {0},
+                {1},
+                {1},
+                {1}
+        };
+        System.out.println("maximum consecutive in coloum: " + l.maxConsecutiveNumberColumn(0, 0, grid1, 0, 0));
+        int[][] grid2 = new int[][]{
+                {1, 0, 1},
+                {1, 1, 1},
+                {1, 1, 0}
+        };
+        System.out.println("maximum square " + l.consecutive1s(grid2));
+        int[] nums1=new int[]{0,2};
+        System.out.println("maximum product for subarray "+l.maxProduct(nums1));
+
+
     }
-    }
+}

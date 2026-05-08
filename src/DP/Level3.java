@@ -67,6 +67,7 @@ public class Level3 {
         return dp[i] = min;
     }
 
+
     boolean canReach(int i, int[] arr, int[] dp4) {
 
         if (i == arr.length - 1) {
