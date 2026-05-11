@@ -42,7 +42,24 @@ public class DP {
         return min;
     }
 
+    int coinChange(int i, int[] coins, int amount) {
+        if (amount == 0) {
+            return 0;
+        }
+        if (i >= coins.length || amount < 0) {
+            return Integer.MAX_VALUE ;
+        }
 
+        int nonPick = coinChange(i + 1, coins, amount);
+        int pick = Integer.MAX_VALUE;
+        if (coins[i] <= amount) {
+          int   next = coinChange(i, coins, amount - coins[i]);
+          if (next!=Integer.MAX_VALUE){
+              pick=1+next;
+          }
+        }
+        return Math.min(pick, nonPick);
+    }
 
 
     public static void main(String[] args) {
@@ -53,5 +70,7 @@ public class DP {
         int[] dp = new int[n + 1];
         Arrays.fill(dp, -1);
         System.out.println("minimum square in number: " + d.minSquareNumber(n, dp));
+        int[] coins = new int[]{1, 2, 5};
+        System.out.println("minimum coins required for amount: " + d.coinChange(0, coins, 11));
     }
 }

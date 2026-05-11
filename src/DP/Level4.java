@@ -160,37 +160,67 @@ public class Level4 {
                         dp[i][j] = 1;
                     } else {
                         dp[i][j] = 1 + Math.min(Math.min(dp[i][j - 1], dp[i - 1][j]), dp[i - 1][j - 1]);
-                    }}
-                    max = Math.max(max, dp[i][j]);
+                    }
+                }
+                max = Math.max(max, dp[i][j]);
 
 
             }
         }
 
-        return max*max;
+        return max * max;
     }
-    int solve(int i,int[] nums,int max,int current,int[] dp){
-        if(i>=nums.length){
+
+    int solve(int i, int[] nums, int max, int current, int[] dp) {
+        if (i >= nums.length) {
             return max;
         }
-        if(dp[i]!=-1){
+        if (dp[i] != -1) {
             return dp[i];
         }
-        current*=nums[i];
-        if(max<current){
-            max=current;
-            max=  Math.max(max,current);
+        current *= nums[i];
+        if (max < current) {
+            max = current;
+            max = Math.max(max, current);
+        } else {
+            current = 1;
         }
-        else{
-            current=1;
-        }
-        return  dp[i]=solve(i+1,nums,max,current,dp);
+        return dp[i] = solve(i + 1, nums, max, current, dp);
     }
+
     public int maxProduct(int[] nums) {
-        int[] dp=new int[nums.length];
-        Arrays.fill(dp,-1);
-        return solve(0,nums,Integer.MIN_VALUE,1,dp);
+        int[] dp = new int[nums.length];
+        Arrays.fill(dp, -1);
+        return solve(0, nums, Integer.MIN_VALUE, 1, dp);
     }
+
+    int findTargetSumWays(int i, int sum, int[] nums, int target) {
+        if (target == sum) {
+            return 1;
+        }
+        if (i >= nums.length) {
+            return 0;
+        }
+
+        int positive = findTargetSumWays(i + 1, sum + nums[i], nums, target);
+        int negative = findTargetSumWays(i + 1, sum - nums[i], nums, target);
+        return positive + negative;
+    }
+
+    int numSquares(int n){
+        int[] dp=new int[n+1];
+        dp[0]=0;
+        for (int i=1;i<n+1;i++){
+         dp[i]=Integer.MAX_VALUE;
+        }
+        for (int i = 1; i <=n; i++) {
+            for (int j = 1; j*j <= i; j++) {
+                dp[i]=Math.min(dp[i],1+dp[i-j*j]);
+            }
+        }
+        return dp[n];
+    }
+
     public static void main(String[] args) {
         Level4 l = new Level4();
         System.out.println("Alice is winner " + l.divisorGame(8));
@@ -238,9 +268,10 @@ public class Level4 {
                 {1, 1, 0}
         };
         System.out.println("maximum square " + l.consecutive1s(grid2));
-        int[] nums1=new int[]{0,2};
-        System.out.println("maximum product for subarray "+l.maxProduct(nums1));
-
-
+        int[] nums1 = new int[]{0, 2};
+        System.out.println("maximum product for subarray " + l.maxProduct(nums1));
+        int[] nums2 = new int[]{1, 1, 1, 1};
+        System.out.println("number of ways to target by using +ve and -ve opration: " + l.findTargetSumWays(0, 0, nums2, 3));
+        System.out.println("minimum square present in number: "+l.numSquares(12));
     }
 }
