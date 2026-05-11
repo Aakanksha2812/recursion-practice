@@ -213,24 +213,32 @@ public class Level3 {
     }
 
     int jump(int i, int[] nums) {
-        if (i == nums.length-1) {
+        if (i == nums.length - 1) {
             return 0;
         }
-        if(i>=nums.length || nums[i]==0){
+        if (i >= nums.length || nums[i] == 0) {
             return Integer.MAX_VALUE;
         }
         int min = Integer.MAX_VALUE;
-        int next=0;
+        int next = 0;
         for (int j = 1; j <= nums[i]; j++) {
             next = jump(i + j, nums);
             if (next != Integer.MAX_VALUE) {
-                next=1+next;
+                next = 1 + next;
                 min = Math.min(min, next);
             }
         }
         return min;
     }
 
+    int canIWin(int l, int r, int[] nums) {
+        if (l == r) {
+            return nums[l];
+        }
+        int left = nums[l] - canIWin(l + 1, r, nums);
+        int right = nums[r] - canIWin(l, r - 1, nums);
+        return Math.max(left, right);
+    }
 
     public static void main(String[] args) {
         Level3 l = new Level3();
@@ -316,5 +324,8 @@ public class Level3 {
         System.out.println("jggfgxghb " + Math.min(l.minJumpR(cost.length - 1, cost, dp10), l.minJumpR(cost.length - 2, cost, dp10)));
         int[] nums1 = new int[]{2, 3, 1, 1, 4};
         System.out.println("minimum steps to reach last index " + l.jump(0, nums1));
+        int[] nums2 = new int[]{1, 5, 2};
+        boolean ans1 = l.canIWin(0, nums2.length - 1, nums2) >= 0 ? true : false;
+        System.out.println("predict the winner: " + ans1);
     }
 }
