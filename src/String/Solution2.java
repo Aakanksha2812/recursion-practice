@@ -5,8 +5,9 @@ public class Solution2 {
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < s.length(); i++) {
             int c = Character.getNumericValue(s.charAt(i));
+            if(c>=1 && c<=26){
             result.append((char) (64 + c));
-        }
+        }}
         return result.toString();
     }
 
