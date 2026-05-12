@@ -142,18 +142,24 @@ public class StringDP {
 
     }
 
-    boolean isWordPresentInDictionary(int i, String s, String[] dict) {
+    boolean isWordPresentInDictionary(int i, String s, String[] dict,int[] dp) {
         if (i >= s.length()) {
             return true;
         }
+        if (dp[i]!=-1){
+            return  dp[i]==1;
+        }
+
         for (int j = i; j < s.length(); j++) {
             String part = s.substring(i, j + 1);
             if (isPresent(part, dict)) {
-                if (isWordPresentInDictionary(j + 1, s, dict)) {
+                if (isWordPresentInDictionary(j + 1, s, dict,dp)) {
+                    dp[i]=1;
                     return true;
                 }
             }
         }
+        dp[i]=0;
         return false;
     }
 
@@ -177,6 +183,10 @@ public class StringDP {
         d.subString(0, "leetscode", new StringBuilder(), list);
         System.out.println(list);
         String[] dict = new String[]{"apple", "pen"};
-        System.out.println("is word form string is present in dictionary: " + d.isWordPresentInDictionary(0, "appleptenapple", dict));
+        String s="appleptenapple";
+        int[] dp1=new int[s.length()];
+        Arrays.fill(dp1,-1);
+        System.out.println("is word form string is present in dictionary: " + d.isWordPresentInDictionary(0, "appleptenapple", dict,dp1));
+
     }
 }
