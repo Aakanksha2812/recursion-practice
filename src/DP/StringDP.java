@@ -142,26 +142,47 @@ public class StringDP {
 
     }
 
-    boolean isWordPresentInDictionary(int i, String s, String[] dict,int[] dp) {
+    boolean isWordPresentInDictionary(int i, String s, String[] dict, int[] dp) {
         if (i >= s.length()) {
             return true;
         }
-        if (dp[i]!=-1){
-            return  dp[i]==1;
+        if (dp[i] != -1) {
+            return dp[i] == 1;
         }
 
         for (int j = i; j < s.length(); j++) {
             String part = s.substring(i, j + 1);
             if (isPresent(part, dict)) {
-                if (isWordPresentInDictionary(j + 1, s, dict,dp)) {
-                    dp[i]=1;
+                if (isWordPresentInDictionary(j + 1, s, dict, dp)) {
+                    dp[i] = 1;
                     return true;
                 }
             }
         }
-        dp[i]=0;
+        dp[i] = 0;
         return false;
     }
+
+    int minExtraChar(int i, String s, String[] dict, int[] dp) {
+        if (i >= s.length()) {
+            return 0;
+        }
+        if (dp[i] != -1) {
+            return dp[i];
+        }
+        int ans = 1 + minExtraChar(i + 1, s, dict, dp);
+        for (int j = i; j < s.length(); j++) {
+            String part = s.substring(i, j + 1);
+            if (isPresent(part, dict)) {
+                ans = Math.min(ans, minExtraChar(j + 1, s, dict, dp));
+
+            }
+        }
+
+
+        return dp[i] = ans;
+    }
+
 
     public static void main(String[] args) {
         StringDP d = new StringDP();
@@ -182,11 +203,14 @@ public class StringDP {
         ArrayList<String> list = new ArrayList<>();
         d.subString(0, "leetscode", new StringBuilder(), list);
         System.out.println(list);
-        String[] dict = new String[]{"apple", "pen"};
-        String s="appleptenapple";
-        int[] dp1=new int[s.length()];
-        Arrays.fill(dp1,-1);
-        System.out.println("is word form string is present in dictionary: " + d.isWordPresentInDictionary(0, "appleptenapple", dict,dp1));
+        String[] dict = new String[]{"leet", "code"};
+        String s = "leetscode";
+        int[] dp1 = new int[s.length()];
+        Arrays.fill(dp1, -1);
+        System.out.println("is word form string is present in dictionary: " + d.isWordPresentInDictionary(0, s, dict, dp1));
+        int[] dp2 = new int[s.length()];
+        Arrays.fill(dp2, -1);
+        System.out.println("minimum extra charcater present in string: "+d.minExtraChar(0,s,dict,dp2));
 
     }
 }
