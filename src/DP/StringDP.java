@@ -1,6 +1,10 @@
 package DP;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+
+import static String.Solution2.intToString;
+import static String.Solution2.isPresent;
 
 public class StringDP {
     int largestCommonSubsequences(int i, int j, String s1, String s2, int[][] dp) {
@@ -125,6 +129,34 @@ public class StringDP {
         return ans.toString();
     }
 
+    void subString(int i, String s, StringBuilder str, ArrayList<String> list) {
+        if (i >= s.length()) {
+
+            list.add(str.toString());
+            return;
+        }
+        str.append(s.charAt(i));
+        subString(i + 1, s, str, list);
+        str.deleteCharAt(str.length() - 1);
+        subString(i + 1, s, str, list);
+
+    }
+
+    boolean isWordPresentInDictionary(int i, String s, String[] dict) {
+        if (i >= s.length()) {
+            return true;
+        }
+        for (int j = i; j < s.length(); j++) {
+            String part = s.substring(i, j + 1);
+            if (isPresent(part, dict)) {
+                if (isWordPresentInDictionary(j + 1, s, dict)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
         StringDP d = new StringDP();
         String s1 = "abac";
@@ -141,5 +173,10 @@ public class StringDP {
         String s4 = "abdce";
         System.out.println("Longest Common Substring: " + d.largestCommonSubstring(s3, s4));
         System.out.println("Shortest common supersequnce: " + d.shortestCommonSubsequence(s1, s2));
+        ArrayList<String> list = new ArrayList<>();
+        d.subString(0, "leetscode", new StringBuilder(), list);
+        System.out.println(list);
+        String[] dict = new String[]{"apple", "pen"};
+        System.out.println("is word form string is present in dictionary: " + d.isWordPresentInDictionary(0, "appleptenapple", dict));
     }
 }

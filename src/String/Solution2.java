@@ -1,13 +1,14 @@
 package String;
 
 public class Solution2 {
-    String intToString(String s) {
+    public static String intToString(String s) {
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < s.length(); i++) {
             int c = Character.getNumericValue(s.charAt(i));
-            if(c>=1 && c<=26){
-            result.append((char) (64 + c));
-        }}
+            if (c >= 1 && c <= 26) {
+                result.append((char) (64 + c));
+            }
+        }
         return result.toString();
     }
 
@@ -41,6 +42,18 @@ public class Solution2 {
             }
         }
         return true;
+    }
+
+    public static boolean isPresent( String target,String[] arr) {
+        if (target == null || arr == null) {
+            return false;
+        }
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i].equals(target)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static void main(String[] args) {
