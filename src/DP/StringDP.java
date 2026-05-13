@@ -214,15 +214,32 @@ public class StringDP {
             for (int j = 0; j <= n - i; j++) {
                 int k = i + j - 1;
                 if (s.charAt(j) == s.charAt(k)) {
-                    dp[j][k]=dp[j+1][k-1]+2;
-                }
-                else{
-                    dp[j][k]=Math.max(dp[j+1][k],dp[j][k-1]);
+                    dp[j][k] = dp[j + 1][k - 1] + 2;
+                } else {
+                    dp[j][k] = Math.max(dp[j + 1][k], dp[j][k - 1]);
                 }
             }
 
         }
-        return n-dp[0][n-1];
+        return n - dp[0][n - 1];
+    }
+
+    int lcs(String s1, String s2) {
+        int n = s1.length();
+        int m = s2.length();
+        int[][] dp = new int[n+1][m+1];
+        int max =dp[0][0] ;
+        for (int i = n - 1; i >= 0; i--) {
+            for (int j = m - 1; j >= 0; j--) {
+                if (s1.charAt(i) == s2.charAt(j)) {
+                    dp[i][j] = 1 + dp[i + 1][j + 1];
+                    max = Math.max(max, dp[i][j]);
+                } else {
+                    dp[i][j] = Math.max(dp[i + 1][j], dp[i][j + 1]);
+                }
+            }
+        }
+        return max;
     }
 
     public static void main(String[] args) {
@@ -254,7 +271,8 @@ public class StringDP {
         System.out.println("minimum extra charcater present in string: " + d.minExtraChar(0, s, dict, dp2));
         String str = "aebcbda";
         System.out.println("maximum palindromic subsquence: " + d.palindromicSubsequence(str));
-        System.out.println("number of character deletion from string: "+d.deletionOfExtraLPS(str));
+        System.out.println("number of character deletion from string: " + d.deletionOfExtraLPS(str));
+        System.out.println("common subsequence between str1 and str2: "+d.lcs("abcde","ace"));
 
     }
 }
