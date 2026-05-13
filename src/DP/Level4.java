@@ -207,18 +207,42 @@ public class Level4 {
         return positive + negative;
     }
 
-    int numSquares(int n){
-        int[] dp=new int[n+1];
-        dp[0]=0;
-        for (int i=1;i<n+1;i++){
-         dp[i]=Integer.MAX_VALUE;
+    int numSquares(int n) {
+        int[] dp = new int[n + 1];
+        dp[0] = 0;
+        for (int i = 1; i < n + 1; i++) {
+            dp[i] = Integer.MAX_VALUE;
         }
-        for (int i = 1; i <=n; i++) {
-            for (int j = 1; j*j <= i; j++) {
-                dp[i]=Math.min(dp[i],1+dp[i-j*j]);
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j * j <= i; j++) {
+                dp[i] = Math.min(dp[i], 1 + dp[i - j * j]);
             }
         }
         return dp[n];
+    }
+
+    int maxJumpToReachLast(int i, int[] jumps,int target,int[] dp) {
+        if (i>=jumps.length){
+            return Integer.MIN_VALUE;
+        }
+        if(i==jumps.length-1){
+            return 0;
+        }
+        if (dp[i]!=-1){
+            return dp[i];
+        }
+      int max=Integer.MIN_VALUE;
+        for (int j = i+1; j < jumps.length; j++) {
+            int next=0;
+            if (Math.abs(jumps[i]-jumps[j])<=target){
+                next=maxJumpToReachLast(j,jumps,target,dp);
+                if (next!=Integer.MIN_VALUE){
+                    max=Math.max(max,1+next);
+                }
+            }
+            max=Math.max(max,next);
+        }
+        return dp[i]= max;
     }
 
     public static void main(String[] args) {
@@ -272,6 +296,10 @@ public class Level4 {
         System.out.println("maximum product for subarray " + l.maxProduct(nums1));
         int[] nums2 = new int[]{1, 1, 1, 1};
         System.out.println("number of ways to target by using +ve and -ve opration: " + l.findTargetSumWays(0, 0, nums2, 3));
-        System.out.println("minimum square present in number: "+l.numSquares(12));
+        System.out.println("minimum square present in number: " + l.numSquares(12));
+        int[] jumps=new int[]{1,3,6,4,1,2};
+        int[] dp2=new int[jumps.length];
+        Arrays.fill(dp2,-1);
+        System.out.println("maximum jumps to reach last index with target: "+l.maxJumpToReachLast(0,jumps,2,dp2));
     }
 }
