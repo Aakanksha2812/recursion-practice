@@ -183,6 +183,47 @@ public class StringDP {
         return dp[i] = ans;
     }
 
+    int palindromicSubsequence(String s) {
+        int n = s.length();
+        int[][] dp = new int[n + 1][n + 1];
+        for (int i = 0; i < n; i++) {
+            dp[i][i] = 1;
+
+        }
+        for (int i = 2; i <= n; i++) {
+            for (int j = 0; j <= n - i; j++) {
+                int k = j + i - 1;
+                if (s.charAt(k) == s.charAt(j)) {
+                    dp[j][k] = dp[j + 1][k - 1] + 2;
+                } else {
+                    dp[j][k] = Math.max(dp[j][k - 1], dp[j + 1][k]);
+                }
+            }
+
+        }
+        return dp[0][n - 1];
+    }
+
+    int deletionOfExtraLPS(String s) {
+        int n = s.length();
+        int[][] dp = new int[n][n];
+        for (int i = 0; i < n; i++) {
+            dp[i][i] = 1;
+        }
+        for (int i = 2; i <= n; i++) {
+            for (int j = 0; j <= n - i; j++) {
+                int k = i + j - 1;
+                if (s.charAt(j) == s.charAt(k)) {
+                    dp[j][k]=dp[j+1][k-1]+2;
+                }
+                else{
+                    dp[j][k]=Math.max(dp[j+1][k],dp[j][k-1]);
+                }
+            }
+
+        }
+        return n-dp[0][n-1];
+    }
 
     public static void main(String[] args) {
         StringDP d = new StringDP();
@@ -210,7 +251,10 @@ public class StringDP {
         System.out.println("is word form string is present in dictionary: " + d.isWordPresentInDictionary(0, s, dict, dp1));
         int[] dp2 = new int[s.length()];
         Arrays.fill(dp2, -1);
-        System.out.println("minimum extra charcater present in string: "+d.minExtraChar(0,s,dict,dp2));
+        System.out.println("minimum extra charcater present in string: " + d.minExtraChar(0, s, dict, dp2));
+        String str = "aebcbda";
+        System.out.println("maximum palindromic subsquence: " + d.palindromicSubsequence(str));
+        System.out.println("number of character deletion from string: "+d.deletionOfExtraLPS(str));
 
     }
 }
