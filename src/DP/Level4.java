@@ -1,6 +1,9 @@
 package DP;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+
+import java.util.Collections;
 
 import static Print.PrintFunction.printArrayMethod;
 
@@ -221,28 +224,61 @@ public class Level4 {
         return dp[n];
     }
 
-    int maxJumpToReachLast(int i, int[] jumps,int target,int[] dp) {
-        if (i>=jumps.length){
+    int maxJumpToReachLast(int i, int[] jumps, int target, int[] dp) {
+        if (i >= jumps.length) {
             return Integer.MIN_VALUE;
         }
-        if(i==jumps.length-1){
+        if (i == jumps.length - 1) {
             return 0;
         }
-        if (dp[i]!=-1){
+        if (dp[i] != -1) {
             return dp[i];
         }
-      int max=Integer.MIN_VALUE;
-        for (int j = i+1; j < jumps.length; j++) {
-            int next=0;
-            if (Math.abs(jumps[i]-jumps[j])<=target){
-                next=maxJumpToReachLast(j,jumps,target,dp);
-                if (next!=Integer.MIN_VALUE){
-                    max=Math.max(max,1+next);
+        int max = Integer.MIN_VALUE;
+        for (int j = i + 1; j < jumps.length; j++) {
+            int next = 0;
+            if (Math.abs(jumps[i] - jumps[j]) <= target) {
+                next = maxJumpToReachLast(j, jumps, target, dp);
+                if (next != Integer.MIN_VALUE) {
+                    max = Math.max(max, 1 + next);
                 }
             }
-            max=Math.max(max,next);
+            max = Math.max(max, next);
         }
-        return dp[i]= max;
+        return dp[i] = max;
+    }
+
+    int maxCostBallons(int i, ArrayList<Integer> list) {
+        if (list.isEmpty()) {
+            return 0;
+        }
+        if (list.size() == 1) {
+            return list.get(0);
+        }
+        int mul = list.get(i);
+        if (i > 0) {
+            mul *= list.get(i - 1);
+        }
+        if (i < list.size()) {
+            mul *= list.get(i + 1);
+        }
+        list.remove(i);
+        return mul + maxCostBallons(0, list);
+    }
+
+    int rodCut(int n, int[] nums, int[] dp) {
+        if (n == 0) {
+            return 0;
+        }
+        if (dp[n] != -1) {
+            return dp[n];
+        }
+        int max = 0;
+        for (int j = 1; j <= n; j++) {
+            int next = nums[j - 1] + rodCut(n - j, nums, dp);
+            max = Math.max(max, next);
+        }
+        return dp[n] = max;
     }
 
     public static void main(String[] args) {
@@ -297,9 +333,20 @@ public class Level4 {
         int[] nums2 = new int[]{1, 1, 1, 1};
         System.out.println("number of ways to target by using +ve and -ve opration: " + l.findTargetSumWays(0, 0, nums2, 3));
         System.out.println("minimum square present in number: " + l.numSquares(12));
-        int[] jumps=new int[]{1,3,6,4,1,2};
-        int[] dp2=new int[jumps.length];
-        Arrays.fill(dp2,-1);
-        System.out.println("maximum jumps to reach last index with target: "+l.maxJumpToReachLast(0,jumps,2,dp2));
+        int[] jumps = new int[]{1, 3, 6, 4, 1, 2};
+        int[] dp2 = new int[jumps.length];
+        Arrays.fill(dp2, -1);
+        System.out.println("maximum jumps to reach last index with target: " + l.maxJumpToReachLast(0, jumps, 2, dp2));
+        Integer[] nums3 = new Integer[]{3, 1, 5, 8};
+        ArrayList<Integer> list = new ArrayList<>();
+        Collections.addAll(list, nums3);
+        System.out.println("maximum cost of ballons: " + l.maxCostBallons(0, list));
+        ArrayList<ArrayList<Integer>> store = new ArrayList<>();
+        int[] nums4 = new int[]{1, 5, 8, 9, 10, 17, 17, 20};
+        int[] dp4 = new int[nums4.length + 1];
+        Arrays.fill(dp4, -1);
+        System.out.println("able to cut rod times: " + l.rodCut(8, nums4, dp4));
+
+
     }
 }
