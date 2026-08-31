@@ -7,7 +7,18 @@ import java.util.PriorityQueue;
 import static Print.PrintFunction.printArrayMethod;
 
 public class HeapPractice {
+    class Node {
+        int value;
+        int arrayIndex;
+        int elementIndex;
 
+        Node(int value, int arrayIndex, int elementIndex) {
+            this.value = value;
+            this.arrayIndex = arrayIndex;
+            this.elementIndex = elementIndex;
+        }
+    }
+    
     static int kthLargest(int[] nums, int k) {
         PriorityQueue<Integer> pq = new PriorityQueue<>();
         for (int num : nums) {
